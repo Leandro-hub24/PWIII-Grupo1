@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RuteaYa</title>
+    
+    <!-- Fuentes de Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Estilos de RuteaYa -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-dark ry-navbar shadow-sm mb-4">
+            <div class="container-fluid px-3 px-md-4 d-flex align-items-center justify-content-between">
+                
+                <!-- Botón hamburguesa: SOLO VISIBLE EN PANTALLAS CHICAS (d-xl-none) -->
+                <button class="navbar-toggler border-0 p-1 d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#ryOffcanvas" aria-controls="ryOffcanvas" aria-label="Abrir menú">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Brand / Logo -->
+                <a class="navbar-brand fw-bold font-space fs-4 text-white m-0" asp-controller="Home" asp-action="Index">
+                    RuteaYa
+                </a>
+
+                <!-- Menú Horizontal: SOLO VISIBLE EN PANTALLAS GRANDES (d-none d-xl-flex) -->
+                <div class="d-none d-xl-flex align-items-center justify-content-between flex-grow-1 ms-4">
+                    <ul class="navbar-nav flex-row gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Home" asp-action="Index">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Viajes" ? "active" : "")" asp-controller="Viajes" asp-action="Index">Mis viajes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Envios" ? "active" : "")" asp-controller="Envios" asp-action="Index">Mis envíos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Oportunidades" ? "active" : "")" asp-controller="Oportunidades" asp-action="Index">Oportunidades</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Optimizador" ? "active" : "")" asp-controller="Optimizador" asp-action="Index">Optimizador</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Transportes" ? "active" : "")" asp-controller="Transportes" asp-action="Index">Mis transportes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Historial" ? "active" : "")" asp-controller="Historial" asp-action="Index">Historial</a>
+                        </li>
+                    </ul>
+
+                    <!-- Usuario a la derecha en PC -->
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="text-white small fw-semibold">Juan Pérez</span>
+                        <a class="btn btn-outline-light btn-sm rounded-3 px-3" asp-controller="Auth" asp-action="Logout">Cerrar sesión</a>
+                    </div>
+                </div>
+
+                <!-- Espaciador para centrar el título en móviles -->
+                <div class="d-xl-none" style="width: 32px;"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Menú Lateral Desplegable (Offcanvas): SOLO SE ACTIVA AL HACER CLIC EN LA HAMBURGUESA -->
+    <div class="offcanvas offcanvas-start ry-offcanvas" tabindex="-1" id="ryOffcanvas" aria-labelledby="ryOffcanvasLabel">
+        <div class="offcanvas-header ry-offcanvas-header d-flex flex-column align-items-start gap-2">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <span class="fw-bold font-space text-white fs-5" id="ryOffcanvasLabel">RuteaYa</span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center w-100 mt-3 pt-3 border-top border-secondary border-opacity-25">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="avatar-circle">JP</div>
+                    <span class="text-white fw-semibold small">Juan Pérez</span>
+                </div>
+                <a class="btn btn-outline-light btn-sm rounded-3 px-2 py-1 fs-7" asp-controller="Auth" asp-action="Logout">Salir</a>
+            </div>
+        </div>
+
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush ry-menu-list">
+                <a class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Home" asp-action="Index">Inicio</a>
+                <a class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "Viajes" ? "active" : "")" asp-controller="Viajes" asp-action="Index">Mis viajes</a>
+                <a class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "Envios" ? "active" : "")" asp-controller="Envios" asp-action="Index">Mis envíos</a>
+                <a class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "Oportunidades" ? "active" : "")" asp-controller="Oportunidades" asp-action="Index">Oportunidades</a>
+                <a class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "Optimizador" ? "active" : "")" asp-controller="Optimizador" asp-action="Index">Optimizador</a>
+                <a class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "Transportes" ? "active" : "")" asp-controller="Transportes" asp-action="Index">Mis transportes</a>
+                <a class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "Historial" ? "active" : "")" asp-controller="Historial" asp-action="Index">Historial</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="container-fluid px-3 px-md-4 pb-5">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top border-secondary border-opacity-25 footer text-muted py-3 mt-auto">
+        <div class="container text-center text-white-50 small">
+            &copy; 2026 - RuteaYa - Todos los derechos reservados
+        </div>
+    </footer>
+
+    <!-- Scripts de Bootstrap y jQuery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

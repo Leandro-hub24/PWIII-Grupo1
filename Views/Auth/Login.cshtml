@@ -1,0 +1,63 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Ingresar";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RuteaYa</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body style="background-color: var(--bg); margin: 0; padding: 0;">
+
+    <div class="container-fluid p-0">
+        <div class="row g-0 min-vh-100">
+            
+            <!-- Banner Izquierdo -->
+            <div class="col-lg-6 d-none d-lg-flex ry-auth-left">
+                <div class="brand fs-4 fw-bold font-space">RuteaYa</div>
+                <div>
+                    <h1 class="fw-bold font-space">Convertí tus viajes habituales en una oportunidad.</h1>
+                    <p>Compartí el espacio libre de tus recorridos y ganá dinero llevando paquetes.</p>
+                </div>
+                <div></div>
+            </div>
+
+            <!-- Formulario Derecho -->
+            <div class="col-12 col-lg-6 ry-auth-right">
+                <div class="ry-auth-form">
+                    <h1 class="fw-bold mb-4 font-space">Ingresar</h1>
+
+                    <form asp-controller="Auth" asp-action="Login" method="post">
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Email</label>
+                            <input type="email" name="email" class="form-control ry-input" placeholder="tu@email.com" required />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small">Contraseña</label>
+                            <input type="password" name="password" class="form-control ry-input" placeholder="••••••••" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-ry-primary w-100 py-2 mb-3">Ingresar</button>
+
+                        <div class="text-center">
+                            <span class="text-secondary small">¿Todavía no tenés una cuenta? </span>
+                            <a asp-controller="Auth" asp-action="Register" class="text-white fw-semibold small text-decoration-underline">Crear cuenta</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

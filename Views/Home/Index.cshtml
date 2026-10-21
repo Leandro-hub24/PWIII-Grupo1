@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<!-- Encabezado responsivo -->
+<div class="d-flex justify-content-between align-items-sm-center flex-column flex-sm-row mb-4 gap-3">
+    <div>
+        <h1 class="fw-bold m-0 font-space fs-2">Hola, Juan</h1>
+        <p class="text-secondary m-0 small">Esto pasa con tus viajes y envíos.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-ry-outline flex-fill flex-sm-grow-0" asp-controller="Envios" asp-action="Crear">Nuevo envío</a>
+        <a class="btn btn-ry-primary flex-fill flex-sm-grow-0" asp-controller="Viajes" asp-action="Crear">Nuevo viaje</a>
+    </div>
+</div>
+
+<!-- Tarjetas KPI Responsivas -->
+<div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="ry-card">
+            <p class="ry-label m-0">Próximos viajes</p>
+            <div class="ry-stat-number">2</div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="ry-card">
+            <p class="ry-label m-0">Envíos pendientes</p>
+            <div class="ry-stat-number">2</div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="ry-card">
+            <p class="ry-label m-0">Oportunidades</p>
+            <div class="ry-stat-number">5</div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="ry-card ry-card-green">
+            <p class="ry-label m-0">Potencial del mes</p>
+            <div class="ry-stat-number">$84.500</div>
+        </div>
+    </div>
+</div>
+
+<!-- Listados principales responsivos -->
+<div class="row g-3">
+    <!-- Próximos viajes -->
+    <div class="col-12 col-lg-7">
+        <div class="ry-card h-100">
+            <h2 class="fs-5 fw-bold mb-3 font-space">Próximos viajes</h2>
+            
+            <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
+                <div>
+                    <strong class="d-block">Belgrano → Lomas de Zamora</strong>
+                    <span class="ry-label">Lun, Mié, Vie · 08:00 – 08:55</span>
+                </div>
+                <span class="ry-badge ry-badge-success">Activo</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
+                <div>
+                    <strong class="d-block">Palermo → San Isidro</strong>
+                    <span class="ry-label">Vie · 18:30 – 19:20</span>
+                </div>
+                <span class="ry-badge ry-badge-success">Activo</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Envíos pendientes -->
+    <div class="col-12 col-lg-5">
+        <div class="ry-card h-100 d-flex flex-column">
+            <h2 class="fs-5 fw-bold mb-3 font-space">Envíos pendientes</h2>
+
+            <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
+                <div>
+                    <strong class="d-block">Plaza Italia → Obelisco</strong>
+                    <span class="ry-label">Zapatillas · $4.000</span>
+                </div>
+                <span class="ry-badge ry-badge-warning">Buscando conductor</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
+                <div>
+                    <strong class="d-block">Recoleta → Quilmes</strong>
+                    <span class="ry-label">Documentos · $3.500</span>
+                </div>
+                <span class="ry-badge">Conductor asignado</span>
+            </div>
+
+            <div class="mt-auto pt-3">
+                <a class="btn btn-ry-outline w-100" asp-controller="Oportunidades" asp-action="Index">Ver oportunidades</a>
+            </div>
+        </div>
+    </div>
+</div>
