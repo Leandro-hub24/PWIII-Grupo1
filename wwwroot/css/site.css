@@ -1,0 +1,243 @@
+/* =========================================================
+   1. VARIABLES Y TEMA OSCURO DE RUTEAYA
+   ========================================================= */
+:root {
+    --bg: #0B1222;
+    --cd: #121C33;
+    --ink: #EEF1F8;
+    --mu: #9AA4BB;
+    --ln: #25324F;
+    --pr: #FF9142;
+    --pt: #0E1830;
+    --gn: #5FD3A0;
+    --gb: #12372B;
+    --ab: #3A2A1C;
+    --at: #FFB37A;
+    --rb: #3A1C1F;
+    --rt: #FF9A9A;
+}
+
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    background-color: var(--bg) !important;
+    color: var(--ink) !important;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0 !important;
+}
+
+h1, h2, h3, h4, .font-space {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* =========================================================
+   2. NAVBAR Y MENÚ LATERAL DESPLEGABLE (OFFCANVAS)
+   ========================================================= */
+.ry-navbar {
+    background-color: #0E1830 !important;
+    border-bottom: 1px solid var(--ln) !important;
+}
+
+    .ry-navbar .nav-link {
+        color: #ffffffb3 !important;
+        font-size: 14.5px;
+        padding: 8px 12px !important;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+        .ry-navbar .nav-link:hover,
+        .ry-navbar .nav-link.active {
+            color: #ffffff !important;
+            background-color: #ffffff12;
+        }
+
+/* Offcanvas (Menú hamburguesa deslizable) */
+.ry-offcanvas {
+    background-color: #0E1830 !important;
+    color: #fff !important;
+    width: 280px !important;
+    border-right: 1px solid var(--ln) !important;
+}
+
+.ry-offcanvas-header {
+    padding: 20px;
+    background-color: #0E1830;
+}
+
+.avatar-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--pr);
+    color: var(--pt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.ry-menu-list .list-group-item {
+    background-color: transparent !important;
+    color: #ffffffb3 !important;
+    border: none !important;
+    padding: 14px 20px !important;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+    .ry-menu-list .list-group-item:hover {
+        background-color: #ffffff12 !important;
+        color: #ffffff !important;
+    }
+
+    .ry-menu-list .list-group-item.active {
+        background-color: #1D2E56 !important;
+        color: #ffffff !important;
+        border-left: 4px solid var(--pr) !important;
+        font-weight: 600;
+    }
+
+/* =========================================================
+   3. TARJETAS Y COMPONENTES PROPIOS
+   ========================================================= */
+.ry-card {
+    background-color: var(--cd);
+    border: 1px solid var(--ln);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.ry-card-green {
+    background-color: var(--gb);
+    border: none;
+}
+
+    .ry-card-green .ry-stat-number,
+    .ry-card-green p,
+    .ry-card-green b {
+        color: var(--gn);
+    }
+
+.ry-stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.ry-label {
+    font-size: 12.5px;
+    color: var(--mu);
+}
+
+/* Badges / Etiquetas de Estado */
+.ry-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--ln);
+    color: var(--mu);
+}
+
+.ry-badge-success {
+    background-color: var(--gb);
+    color: var(--gn);
+    border-color: transparent;
+}
+
+.ry-badge-warning {
+    background-color: var(--ab);
+    color: var(--at);
+    border-color: transparent;
+}
+
+.ry-badge-danger {
+    background-color: var(--rb);
+    color: var(--rt);
+    border-color: transparent;
+}
+
+/* Botones con estilo RuteaYa */
+.btn-ry-primary {
+    background-color: var(--pr) !important;
+    color: var(--pt) !important;
+    border-radius: 12px;
+    font-weight: 600;
+    border: none;
+    padding: 10px 18px;
+}
+
+.btn-ry-outline {
+    background-color: transparent !important;
+    color: var(--ink) !important;
+    border: 1.5px solid var(--ln) !important;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 10px 18px;
+}
+
+/* =========================================================
+   4. PANTALLA DE AUTENTICACIÓN (LOGIN / REGISTRO)
+   ========================================================= */
+.ry-auth-left {
+    background-color: #0E1830;
+    color: #fff;
+    padding: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+    .ry-auth-left h1 {
+        font-size: 34px;
+        line-height: 1.2;
+        max-width: 420px;
+    }
+
+    .ry-auth-left p {
+        color: #ffffffad;
+        margin-top: 12px;
+        max-width: 400px;
+    }
+
+.ry-auth-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+}
+
+.ry-auth-form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.ry-input {
+    background-color: var(--cd) !important;
+    border: 1.5px solid var(--ln) !important;
+    color: var(--ink) !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    font-size: 15px !important;
+}
+
+    .ry-input:focus {
+        outline: 2px solid #FF9142 !important;
+        box-shadow: none !important;
+    }
+
+    .ry-input::placeholder {
+        color: var(--mu) !important;
+    }
