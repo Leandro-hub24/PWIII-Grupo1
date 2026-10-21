@@ -1,7 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using RuteoYa.Entidades;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+using var db = new RuteoYaDbContext();
+db.Database.Migrate();
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<RuteoYaDbContext>();
 
 var app = builder.Build();
 

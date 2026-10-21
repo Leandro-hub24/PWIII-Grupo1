@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="RuteoYa.Entidades/RuteoYa.Entidades.csproj" />
+  <Project Path="RuteoYa.Web/RuteoYa.Web.csproj" />
+</Solution>

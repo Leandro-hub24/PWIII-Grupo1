@@ -1,0 +1,15 @@
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\bin\Debug\net10.0\RuteoYa.Entidades.deps.json
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\bin\Debug\net10.0\RuteoYa.Entidades.runtimeconfig.json
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\bin\Debug\net10.0\RuteoYa.Entidades.dll
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\bin\Debug\net10.0\RuteoYa.Entidades.pdb
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.csproj.AssemblyReference.cache
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.AssemblyInfoInputs.cache
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.AssemblyInfo.cs
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.csproj.CoreCompileInputs.cache
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.sourcelink.json
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.dll
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\refint\RuteoYa.Entidades.dll
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.pdb
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.genruntimeconfig.cache
+D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\ref\RuteoYa.Entidades.dll
