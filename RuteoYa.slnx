@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="RuteoYa.API/RuteoYa.API.csproj" Id="88ec2b8f-162f-48a2-bb36-65512e7f0f93" />
   <Project Path="RuteoYa.Entidades/RuteoYa.Entidades.csproj" />
+  <Project Path="RuteoYa.Logica/RuteoYa.Logica.csproj" Id="3d2dac92-32e7-48d7-9c72-ab12c1bfcc94" />
   <Project Path="RuteoYa.Web/RuteoYa.Web.csproj" />
 </Solution>
