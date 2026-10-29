@@ -1,0 +1,6 @@
+@RuteoYa.API_HostAddress = http://localhost:5224
+
+GET {{RuteoYa.API_HostAddress}}/Usuarios/
+Accept: application/json
+
+###

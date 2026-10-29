@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace RuteoYa.Entidades;
+namespace RuteoYa.Entidades.Entities;
 
 public partial class Envio
 {

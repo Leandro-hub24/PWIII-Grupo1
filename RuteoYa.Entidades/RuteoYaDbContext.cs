@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RuteoYa.Entidades.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,9 @@ public class RuteoYaDbContext : DbContext
     public DbSet<Parada> Paradas { get; set; }
     public DbSet<ViajeDia> ViajeDias { get; set; }
 
+    public RuteoYaDbContext(DbContextOptions<RuteoYaDbContext> options) : base(options)
+    {
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(
