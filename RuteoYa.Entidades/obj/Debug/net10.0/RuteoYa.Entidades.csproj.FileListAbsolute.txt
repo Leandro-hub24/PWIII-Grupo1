@@ -13,3 +13,18 @@ D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entid
 D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.pdb
 D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.genruntimeconfig.cache
 D:\Tecnicatura en Desarrollo Web\Programación Web III\TPI\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\ref\RuteoYa.Entidades.dll
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\bin\Debug\net10.0\RuteoYa.Entidades.deps.json
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\bin\Debug\net10.0\RuteoYa.Entidades.runtimeconfig.json
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\bin\Debug\net10.0\RuteoYa.Entidades.dll
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\bin\Debug\net10.0\RuteoYa.Entidades.pdb
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.csproj.AssemblyReference.cache
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.AssemblyInfoInputs.cache
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.AssemblyInfo.cs
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.csproj.CoreCompileInputs.cache
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.sourcelink.json
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.dll
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\refint\RuteoYa.Entidades.dll
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.pdb
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\RuteoYa.Entidades.genruntimeconfig.cache
+C:\Users\Leandro\source\repos\RuteoYa\RuteoYa.Entidades\obj\Debug\net10.0\ref\RuteoYa.Entidades.dll

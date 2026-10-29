@@ -1,94 +1,104 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using RuteoYa.Logica;
-using RuteoYa.Entidades;
+﻿using Microsoft.AspNetCore.Mvc;
+using RuteoYa.Entidades.DTOs;
+using RuteoYa.Entidades.Interfaces.Services;
 
-namespace RuteoYa.API.Controllers
+namespace RuteoYa.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class UsuariosController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsuariosController : ControllerBase
+    private readonly IUsuarioService _usuarioService;
+
+    public UsuariosController(IUsuarioService usuarioService)
     {
-        private readonly IUsuariosLogica _usuariosLogica;
+        _usuarioService = usuarioService;
+    }
 
-        public UsuariosController(IUsuariosLogica usuariosLogica)
-        {
-            _usuariosLogica = usuariosLogica;
-        }
+    /// <summary>
+    /// GET: api/usuarios
+    /// </summary>
+    [HttpGet]
+    public async Task<ActionResult<List<UsuarioDto>>> ObtenerTodos()
+    {
+        var usuarios = await _usuarioService.ObtenerTodosAsync();
+        return Ok(usuarios);
+    }
 
-        // GET: api/usuarios
-        [HttpGet]
-        public async Task<ActionResult<List<Usuario>>> GetUsuarios()
-        {
-            var usuarios = await _usuariosLogica.GetUsuariosAsync();
-            return Ok(usuarios);
-        }
+    /// <summary>
+    /// GET: api/usuarios/5
+    /// </summary>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UsuarioDto>> ObtenerPorId(int id)
+    {
+        var usuario = await _usuarioService.ObtenerPorIdAsync(id);
+        if (usuario == null)
+            return NotFound(new { message = "Usuario no encontrado" });
 
-        // GET: api/usuarios/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Usuario>> GetUsuarioPorId(int id)
-        {
-            var usuario = await _usuariosLogica.GetUsuarioPorIdAsync(id);
+        return Ok(usuario);
+    }
 
-            if (usuario == null)
-            {
-                return NotFound();
-            }
+    /// <summary>
+    /// POST: api/usuarios
+    /// </summary>
+    [HttpPost]
+    public async Task<ActionResult<UsuarioDto>> Crear([FromBody] CrearUsuarioDto dto)
+    {
+        var resultado = await _usuarioService.CrearAsync(dto);
 
-            return Ok(usuario);
-        }
+        if (!resultado.Success)
+            return BadRequest(new { message = resultado.Message });
 
-        // POST: api/usuarios
-        [HttpPost]
-        public async Task<ActionResult> CreateUsuario([FromBody] Usuario usuario)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        return CreatedAtAction(nameof(ObtenerPorId), 
+            new { id = resultado.Usuario!.Id }, 
+            resultado.Usuario);
+    }
 
-            var creado = await _usuariosLogica.CreateUsuarioAsync(usuario);
+    /// <summary>
+    /// PUT: api/usuarios/5
+    /// </summary>
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Actualizar(int id, [FromBody] ActualizarUsuarioDto dto)
+    {
+        if (id != dto.Id)
+            return BadRequest(new { message = "El ID de la URL no coincide con el del body" });
 
-            if (!creado)
-            {
-                return BadRequest("No se pudo crear el usuario.");
-            }
+        var resultado = await _usuarioService.ActualizarAsync(dto);
 
-            // Retorna un código 201 Created apuntando al endpoint de consulta por ID
-            return CreatedAtAction(nameof(GetUsuarioPorId), new { id = usuario.Id }, usuario);
-        }
+        if (!resultado.Success)
+            return BadRequest(new { message = resultado.Message });
 
-        // PUT: api/usuarios/5
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateUsuario(int id, [FromBody] Usuario usuario)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState); 
-            }
+        return NoContent();
+    }
 
-            var actualizado = await _usuariosLogica.UpdateUsuarioAsync(id, usuario);
+    /// <summary>
+    /// DELETE: api/usuarios/5
+    /// </summary>
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Eliminar(int id)
+    {
+        var resultado = await _usuarioService.EliminarAsync(id);
 
-            if (!actualizado)
-            {
-                return NotFound($"No se encontró el usuario con ID {id} para actualizar.");
-            }
+        if (!resultado.Success)
+            return NotFound(new { message = resultado.Message });
 
-            return NoContent(); // 204 No Content indica éxito sin necesidad de retornar cuerpo
-        }
+        return NoContent();
+    }
 
-        // DELETE: api/usuarios/5
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> DeleteUsuario(int id)
-        {
-            var eliminado = await _usuariosLogica.DeleteUsuarioAsync(id);
+    /// <summary>
+    /// POST: api/usuarios/validar
+    /// </summary>
+    [HttpPost("validar")]
+    public async Task<ActionResult<UsuarioDto>> ValidarCredenciales([FromBody] ValidarCredencialesRequest request)
+    {
+        var esValido = await _usuarioService.ValidarCredencialesAsync(request.Email, request.Password);
 
-            if (!eliminado)
-            {
-                return NotFound($"No se encontró el usuario con ID {id} para eliminar.");
-            }
+        if (!esValido)
+            return Unauthorized(new { message = "Credenciales inválidas" });
 
-            return NoContent();
-        }
+        var usuario = await _usuarioService.ObtenerPorEmailAsync(request.Email);
+        return Ok(usuario);
     }
 }
+
+public record ValidarCredencialesRequest(string Email, string Password);

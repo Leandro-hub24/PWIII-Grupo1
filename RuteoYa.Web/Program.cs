@@ -1,17 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
+using RuteoYa.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-using var db = new RuteoYaDbContext();
-db.Database.Migrate();
-
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDbContext<RuteoYaDbContext>();
 
+// Servicios propios de Web (orquestadores, servicios HTTP que consumen API)
+var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7001";
+builder.Services.AddWebServices(apiBaseUrl);
+
 var app = builder.Build();
+
+// Migración automática al iniciar (solo para dev)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<RuteoYaDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

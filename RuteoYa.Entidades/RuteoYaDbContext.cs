@@ -20,7 +20,7 @@ public class RuteoYaDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(
-            @"Server=.\SQLEXPRESS;Database=RuteoYa;Trusted_Connection=True;TrustServerCertificate=True");
+            @"Server=(localdb)\MSSQLLocalDB;Database=RuteoYa;Trusted_Connection=True;TrustServerCertificate=True");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

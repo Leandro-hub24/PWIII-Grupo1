@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "e3Np2s8twzk=",
+  "dgSpecHash": "5S/X+5vgRQY=",
   "success": true,
-  "projectFilePath": "D:\\Tecnicatura en Desarrollo Web\\Programación Web III\\TPI\\RuteoYa\\RuteoYa.Entidades\\RuteoYa.Entidades.csproj",
+  "projectFilePath": "C:\\Users\\Leandro\\source\\repos\\RuteoYa\\RuteoYa.Entidades\\RuteoYa.Entidades.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Leandro\\.nuget\\packages\\azure.core\\1.50.0\\azure.core.1.50.0.nupkg.sha512",
     "C:\\Users\\Leandro\\.nuget\\packages\\azure.identity\\1.17.1\\azure.identity.1.17.1.nupkg.sha512",
