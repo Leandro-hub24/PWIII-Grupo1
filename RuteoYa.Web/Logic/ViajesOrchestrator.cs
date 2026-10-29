@@ -1,28 +1,22 @@
 using RuteoYa.Entidades;
-using RuteoYa.Entidades.Interfaces.Services;
 using RuteoYa.Web.Models;
+using RuteoYa.Web.Services;
 
 namespace RuteoYa.Web.Logic;
 
 /// <summary>
 /// Orquestador de lógica de presentación para Viajes.
-/// Coordina múltiples servicios de negocio y transforma datos
-/// entre ViewModels y Entidades.
+/// Coordina llamadas a la API y transforma datos entre ViewModels y Entidades.
 /// </summary>
 public class ViajesOrchestrator
 {
     private readonly RuteoYaDbContext _db;
-    private readonly IDistanciaService _distanciaService;
-    private readonly IGeocoderService _geocoderService;
+    private readonly IViajesApiService _viajesApiService;
 
-    public ViajesOrchestrator(
-        RuteoYaDbContext db,
-        IDistanciaService distanciaService,
-        IGeocoderService geocoderService)
+    public ViajesOrchestrator(RuteoYaDbContext db, IViajesApiService viajesApiService)
     {
         _db = db;
-        _distanciaService = distanciaService;
-        _geocoderService = geocoderService;
+        _viajesApiService = viajesApiService;
     }
 
     /// <summary>
@@ -32,8 +26,13 @@ public class ViajesOrchestrator
     {
         try
         {
-            // 1. Calcular ruta y coordenadas
-            var ruta = await _distanciaService.CalcularAsync(model.OrigenDir, model.DestinoDir);
+            // 1. Calcular ruta y coordenadas vía API
+            var ruta = await _viajesApiService.CalcularDistanciaAsync(model.OrigenDir, model.DestinoDir);
+
+            if (ruta == null)
+            {
+                return (false, "No se pudo calcular la ruta. Verifique las direcciones.", null);
+            }
 
             // 2. Validaciones de negocio específicas de la UI
             if (ruta.DistanciaKm > 500)
@@ -74,22 +73,6 @@ public class ViajesOrchestrator
         {
             // Log del error (inyectar ILogger si es necesario)
             return (false, $"Error al crear el viaje: {ex.Message}", null);
-        }
-    }
-
-    /// <summary>
-    /// Valida si una dirección es geocodificable antes de crear el viaje.
-    /// </summary>
-    public async Task<bool> ValidarDireccionAsync(string direccion)
-    {
-        try
-        {
-            var resultado = await _geocoderService.GeocodeAsync(direccion);
-            return resultado.Lat != 0 && resultado.Lng != 0;
-        }
-        catch
-        {
-            return false;
         }
     }
 }

@@ -18,6 +18,12 @@ public static class DependencyInjection
             client.Timeout = TimeSpan.FromSeconds(30);
         });
 
+        services.AddHttpClient<IViajesApiService, ViajesApiService>(client =>
+        {
+            client.BaseAddress = new Uri(apiBaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
+
         // Orquestadores de lógica de presentación
         services.AddScoped<ViajesOrchestrator>();
         services.AddScoped<UsuariosOrchestrator>();

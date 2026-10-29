@@ -194,7 +194,8 @@ namespace RuteoYa.Entidades.Migrations
 
                     b.Property<string>("Apellido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreadoEn")
                         .HasColumnType("datetime2");
@@ -208,7 +209,8 @@ namespace RuteoYa.Entidades.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()

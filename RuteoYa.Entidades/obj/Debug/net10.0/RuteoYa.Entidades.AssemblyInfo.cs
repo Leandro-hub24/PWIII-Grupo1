@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RuteoYa.Entidades")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c17ec05edc2879c5d6c70c99eddea87dfe10df41")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1740015a2407cfc6ff9fe481b95f0458da81db4")]
 [assembly: System.Reflection.AssemblyProductAttribute("RuteoYa.Entidades")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RuteoYa.Entidades")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

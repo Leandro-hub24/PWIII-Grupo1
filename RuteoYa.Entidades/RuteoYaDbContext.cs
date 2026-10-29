@@ -43,6 +43,20 @@ public class RuteoYaDbContext : DbContext
                   .HasForeignKey(e => e.UsuarioId)
                   .OnDelete(DeleteBehavior.Restrict);
         });
+
+        // Seed de datos - Usuario de prueba
+        modelBuilder.Entity<Usuario>().HasData(
+            new Usuario
+            {
+                Id = 1,
+                Nombre = "Admin",
+                Apellido = "Sistema",
+                Email = "admin@ruteoya.com",
+                // Password: Admin123!
+                PasswordHash = "$2a$11$xKvLhR4QZJvKZN8Y5Y8wWeF.0KK/jZqR6HjF4V5hFhqE3YHxMYGhK",
+                CreadoEn = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc)
+            }
+        );
     }
 
 }
