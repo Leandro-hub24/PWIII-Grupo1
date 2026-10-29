@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RuteoYa.Logica;
-using RuteoYa.Entidades;
+using RuteoYa.Entidades.Entities;
+using RuteoYa.Entidades.Interfaces.Services;
+using RuteoYa.Logica.Services;
 
 namespace RuteoYa.API.Controllers
 {
@@ -9,9 +10,9 @@ namespace RuteoYa.API.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUsuariosLogica _usuariosLogica;
+        private readonly IUsuariosService _usuariosLogica;
 
-        public UsuariosController(IUsuariosLogica usuariosLogica)
+        public UsuariosController(IUsuariosService usuariosLogica)
         {
             _usuariosLogica = usuariosLogica;
         }

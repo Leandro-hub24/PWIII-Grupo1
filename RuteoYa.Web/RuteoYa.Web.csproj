@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RuteoYa.API\RuteoYa.API.csproj" />
     <ProjectReference Include="..\RuteoYa.Entidades\RuteoYa.Entidades.csproj" />
   </ItemGroup>
 

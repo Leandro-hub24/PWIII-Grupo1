@@ -1,21 +1,15 @@
-﻿using RuteoYa.Entidades.Repositorios;
-using RuteoYa.Entidades;
-namespace RuteoYa.Logica
+﻿using RuteoYa.Entidades.Interfaces.Repositories;
+using RuteoYa.Entidades.Entities;
+using RuteoYa.Entidades.Interfaces.Services;
+namespace RuteoYa.Logica.Services
+
 {   
-    public interface IUsuariosLogica
-    {
-        Task<List<Usuario>> GetUsuariosAsync();
-        Task<Usuario?> GetUsuarioPorIdAsync(int id);
-        Task<Usuario?> GetUsuarioPorEmailAsync(string email);
-        Task<bool> CreateUsuarioAsync(Usuario usuario);
-        Task<bool> UpdateUsuarioAsync(int id, Usuario usuario);
-        Task<bool> DeleteUsuarioAsync(int id);
-    }
-    public class UsuariosLogica : IUsuariosLogica
+
+    public class UsuariosService : IUsuariosService
     {
         private readonly IUsuariosRepositorio _usuariosRepositorio;
 
-        public UsuariosLogica(IUsuariosRepositorio usuariosRepositorio)
+        public UsuariosService(IUsuariosRepositorio usuariosRepositorio)
         {
             _usuariosRepositorio = usuariosRepositorio;
         }
