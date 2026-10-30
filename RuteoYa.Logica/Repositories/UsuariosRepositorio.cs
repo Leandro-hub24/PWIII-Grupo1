@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RuteoYa.Entidades;
 using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RuteoYa.Entidades.Repositorios;
+namespace RuteoYa.Logica.Repositories;
 
 
 
