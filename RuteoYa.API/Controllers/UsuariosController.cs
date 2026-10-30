@@ -41,9 +41,9 @@ namespace RuteoYa.API.Controllers
             return Ok(usuario);
         }
 
-        // POST: api/usuarios
-        [HttpPost]
-        public async Task<ActionResult> CreateUsuario([FromBody] Usuario usuario)
+        // POST: api/usuarios/create
+        [HttpPost("create")]
+        public async Task<ActionResult<bool>> CreateUsuario([FromBody] Usuario usuario)
         {
             if (!ModelState.IsValid)
             {
@@ -56,19 +56,16 @@ namespace RuteoYa.API.Controllers
 
                 if (!creado)
                 {
-                return BadRequest("No se pudo crear el usuario.");
+                    return BadRequest("No se pudo crear el usuario en la base de datos.");
                 }
 
-                // Retorna un código 201 Created apuntando al endpoint de consulta por ID
-                return CreatedAtAction(nameof(GetUsuarioPorId), new { id = usuario.Id }, usuario);
+                return Ok(true);
             }
             catch (Exception ex) 
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, "Error interno del servidor.");
             }
-            
-
-            
+      
         }
 
         // PUT: api/usuarios/5

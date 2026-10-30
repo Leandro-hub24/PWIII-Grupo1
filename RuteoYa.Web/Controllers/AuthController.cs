@@ -2,17 +2,18 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using RuteoYa.Web.Models;
+using RuteoYa.Web.Services;
 using System.Security.Claims;
 
 namespace PrototipoDeRuteaYa.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly HttpClient _httpClient;
+        private readonly IAuthService _authService;
 
-        public AuthController(IHttpClientFactory httpClientFactory)
+        public AuthController(IAuthService authService)
         {
-            _httpClient = httpClientFactory.CreateClient("MiApi");
+            _authService = authService;
         }
 
         [HttpGet]
@@ -30,34 +31,29 @@ namespace PrototipoDeRuteaYa.Controllers
                 return View(model);
             }
 
-            // 1. Consumir la Web API para validar credenciales y obtener el JWT
-            var response = await _httpClient.PostAsJsonAsync("api/sesion/login", model);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                ModelState.AddModelError(string.Empty, "Credenciales incorrectas.");
-                return View(model);
+                var resultado = await _authService.LoginAsync(model);
+                if (resultado == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Credenciales incorrectas.");
+                    return View(model);
+                }
+
+                var claimsIdentity = _authService.CrearClaims(resultado);
+
+                // 3. Registrar al usuario en el contexto de ASP.NET Core MVC (Crea la Cookie HttpOnly automáticamente)
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity));
+
+                return RedirectToAction( "Index","Home");
+                }
+            catch (Exception ex) 
+            { 
+                return BadRequest(new { message = ex.Message }); 
             }
-
-            var resultado = await response.Content.ReadFromJsonAsync<TokenResponseDto>();
-
-            // 2. Crear los claims del usuario para el MVC (puedes decodificar el JWT o usar datos que devuelva la API)
-            var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, resultado.Id.ToString()),
-            new Claim(ClaimTypes.Name, resultado.NombreApellido),
-            // Guardamos el token JWT dentro de un claim para usarlo después al llamar a la API
-            new Claim("JwtToken", resultado.Token)
-        };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            // 3. Registrar al usuario en el contexto de ASP.NET Core MVC (Crea la Cookie HttpOnly automáticamente)
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity));
-
-            return RedirectToAction( "Index","Home");
+            
         }
 
         [HttpGet]
@@ -67,17 +63,12 @@ namespace PrototipoDeRuteaYa.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Register(string nombre, string apellido, string email, string password)
-        {
-            return RedirectToAction("Index", "Home");
-        }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Auth");
         }
     }
 }
