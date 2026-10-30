@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
 using RuteoYa.Entidades.Interfaces.Repositories;
 using RuteoYa.Entidades.Interfaces.Services;
-using RuteoYa.Entidades.Repositorios;
+using RuteoYa.Logica.Repositories;
 using RuteoYa.Logica.Services;
 
 var builder = WebApplication.CreateBuilder(args);
