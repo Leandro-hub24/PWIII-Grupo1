@@ -55,7 +55,7 @@
 
                     <!-- Usuario a la derecha en PC -->
                     <div class="d-flex align-items-center gap-3">
-                        <span class="text-white small fw-semibold">Juan Pérez</span>
+                        <span class="text-white small fw-semibold">@(ViewData["nombreUsuario"] ?? "Usuario")</span>
                         <a class="btn btn-outline-light btn-sm rounded-3 px-3" asp-controller="Auth" asp-action="Logout">Cerrar sesión</a>
                     </div>
                 </div>

@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RuteoYa.Entidades;
+using RuteoYa.Entidades.DTOs;
 using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RuteoYa.Entidades.Repositorios;
 
 
 
@@ -17,19 +18,22 @@ public class UsuariosRepositorio : IUsuariosRepositorio
         _context = context;
     }
 
-    public Task<List<Usuario>> GetUsuarios()
+    public async Task<List<Usuario>> GetUsuarios()
     {
-        return _context.Usuarios.ToListAsync();
+        return await _context.Usuarios.ToListAsync();
     }               
 
-    public Task<Usuario?> GetUsuarioPorId(int id)
+    public async Task<Usuario?> GetUsuarioPorId(int id)
     {
-        return _context.Usuarios.FindAsync(id).AsTask();
+        return await _context.Usuarios.FindAsync(id).AsTask();
     }
 
-    public Task<Usuario?> GetUsuarioPorEmail(string email)
+    public async Task<UsuarioDto?> GetUsuarioPorEmailAsync(string email)
     {
-        return _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+        return await _context.Usuarios
+            .Where(u => u.Email == email)
+            .Select(u => new UsuarioDto(u.Id, u.Nombre, u.Apellido, u.Email, u.PasswordHash, u.CreadoEn))
+            .FirstOrDefaultAsync();
     }
 
     public async Task<bool> CreateUsuario(Usuario usuario)

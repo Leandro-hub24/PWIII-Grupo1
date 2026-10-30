@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RuteoYa.Entidades.DTOs;
 using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Services;
 using RuteoYa.Logica.Services;
@@ -10,26 +11,27 @@ namespace RuteoYa.API.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUsuariosService _usuariosLogica;
+        private readonly IUsuariosService _usuariosService;
 
-        public UsuariosController(IUsuariosService usuariosLogica)
+        public UsuariosController(IUsuariosService usuariosService)
         {
-            _usuariosLogica = usuariosLogica;
+            _usuariosService = usuariosService;
         }
 
         // GET: api/usuarios
         [HttpGet]
         public async Task<ActionResult<List<Usuario>>> GetUsuarios()
         {
-            var usuarios = await _usuariosLogica.GetUsuariosAsync();
+            var usuarios = await _usuariosService.GetUsuariosAsync();
             return Ok(usuarios);
         }
+       
 
         // GET: api/usuarios/5
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Usuario>> GetUsuarioPorId(int id)
         {
-            var usuario = await _usuariosLogica.GetUsuarioPorIdAsync(id);
+            var usuario = await _usuariosService.GetUsuarioPorIdAsync(id);
 
             if (usuario == null)
             {
@@ -48,15 +50,25 @@ namespace RuteoYa.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var creado = await _usuariosLogica.CreateUsuarioAsync(usuario);
-
-            if (!creado)
+            try
             {
-                return BadRequest("No se pudo crear el usuario.");
-            }
+                var creado = await _usuariosService.CreateUsuarioAsync(usuario);
 
-            // Retorna un código 201 Created apuntando al endpoint de consulta por ID
-            return CreatedAtAction(nameof(GetUsuarioPorId), new { id = usuario.Id }, usuario);
+                if (!creado)
+                {
+                return BadRequest("No se pudo crear el usuario.");
+                }
+
+                // Retorna un código 201 Created apuntando al endpoint de consulta por ID
+                return CreatedAtAction(nameof(GetUsuarioPorId), new { id = usuario.Id }, usuario);
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            
+
+            
         }
 
         // PUT: api/usuarios/5
@@ -68,7 +80,7 @@ namespace RuteoYa.API.Controllers
                 return BadRequest(ModelState); 
             }
 
-            var actualizado = await _usuariosLogica.UpdateUsuarioAsync(id, usuario);
+            var actualizado = await _usuariosService.UpdateUsuarioAsync(id, usuario);
 
             if (!actualizado)
             {
@@ -82,7 +94,7 @@ namespace RuteoYa.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteUsuario(int id)
         {
-            var eliminado = await _usuariosLogica.DeleteUsuarioAsync(id);
+            var eliminado = await _usuariosService.DeleteUsuarioAsync(id);
 
             if (!eliminado)
             {
