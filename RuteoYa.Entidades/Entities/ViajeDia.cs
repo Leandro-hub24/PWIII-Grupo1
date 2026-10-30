@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RuteoYa.Entidades;
+namespace RuteoYa.Entidades.Entities;
 
 public partial class ViajeDia
 {

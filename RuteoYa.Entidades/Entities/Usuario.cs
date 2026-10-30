@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RuteoYa.Entidades;
+namespace RuteoYa.Entidades.Entities;
 
 public partial class Usuario
 {

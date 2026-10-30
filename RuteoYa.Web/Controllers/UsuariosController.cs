@@ -1,129 +1,90 @@
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RuteoYa.Web.Logic;
-using RuteoYa.Web.Models;
+using RuteoYa.Web.Services;
 
-namespace RuteoYa.Web.Controllers;
-
-public class UsuariosController : Controller
+namespace RuteoYa.Web.Controllers
 {
-    private readonly UsuariosOrchestrator _orchestrator;
-
-    public UsuariosController(UsuariosOrchestrator orchestrator)
+    public class UsuariosController : Controller
     {
-        _orchestrator = orchestrator;
-    }
+        private readonly IUsuariosService _usuariosService;
 
-    // GET: /Usuarios
-    public async Task<IActionResult> Index()
-    {
-        var usuarios = await _orchestrator.ObtenerTodosAsync();
-        return View(usuarios);
-    }
-
-    // GET: /Usuarios/Registro
-    public IActionResult Registro()
-    {
-        return View();
-    }
-
-    // POST: /Usuarios/Registro
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Registro(RegistroUsuarioViewModel model)
-    {
-        if (!ModelState.IsValid)
-            return View(model);
-
-        var resultado = await _orchestrator.RegistrarAsync(model);
-
-        if (resultado.Success)
+        public UsuariosController(IUsuariosService usuariosService)
         {
-            TempData["Success"] = resultado.Message;
-            return RedirectToAction("Login");
+            _usuariosService = usuariosService;
+        }
+        // GET: UsuariosController
+        public ActionResult Index()
+        {
+            return View();
         }
 
-        ModelState.AddModelError("", resultado.Message);
-        return View(model);
-    }
-
-    // GET: /Usuarios/Login
-    public IActionResult Login()
-    {
-        return View();
-    }
-
-    // POST: /Usuarios/Login
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(LoginViewModel model)
-    {
-        if (!ModelState.IsValid)
-            return View(model);
-
-        var resultado = await _orchestrator.LoginAsync(model);
-
-        if (resultado.Success && resultado.Usuario != null)
+        // GET: UsuariosController/Details/5
+        public ActionResult Details(int id)
         {
-            // TODO: Configurar autenticación con cookies/JWT
-            // HttpContext.Session.SetInt32("UsuarioId", resultado.Usuario.Id);
-            
-            TempData["Success"] = $"Bienvenido {resultado.Usuario.NombreCompleto}";
-            return RedirectToAction("Index", "Home");
+            return View();
         }
 
-        ModelState.AddModelError("", resultado.Message);
-        return View(model);
-    }
-
-    // GET: /Usuarios/Editar/5
-    public async Task<IActionResult> Editar(int id)
-    {
-        var model = await _orchestrator.ObtenerParaEditarAsync(id);
-        if (model == null)
+        // GET: UsuariosController/Create
+        public ActionResult Create()
         {
-            TempData["Error"] = "Usuario no encontrado";
-            return RedirectToAction("Index");
+            return View();
         }
 
-        return View(model);
-    }
-
-    // POST: /Usuarios/Editar/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Editar(EditarUsuarioViewModel model)
-    {
-        if (!ModelState.IsValid)
-            return View(model);
-
-        var resultado = await _orchestrator.ActualizarAsync(model);
-
-        if (resultado.Success)
+        // POST: UsuariosController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(IFormCollection collection)
         {
-            TempData["Success"] = resultado.Message;
-            return RedirectToAction("Index");
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
-        ModelState.AddModelError("", resultado.Message);
-        return View(model);
-    }
-
-    // POST: /Usuarios/Eliminar/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Eliminar(int id)
-    {
-        var resultado = await _orchestrator.EliminarAsync(id);
-
-        if (resultado.Success)
+        // GET: UsuariosController/Edit/5
+        public ActionResult Edit(int id)
         {
-            TempData["Success"] = resultado.Message;
-        }
-        else
-        {
-            TempData["Error"] = resultado.Message;
+            return View();
         }
 
-        return RedirectToAction("Index");
+        // POST: UsuariosController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: UsuariosController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: UsuariosController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

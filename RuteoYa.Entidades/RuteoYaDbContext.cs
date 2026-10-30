@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RuteoYa.Entidades.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

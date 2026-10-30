@@ -11,6 +11,11 @@ builder.Services.AddDbContext<RuteoYaDbContext>();
 var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7001";
 builder.Services.AddWebServices(apiBaseUrl);
 
+
+// Add services to the container.
+builder.Services.AddScoped<IUsuariosService, UsuariosService>();
+
+
 var app = builder.Build();
 
 // Migración automática al iniciar (solo para dev)
