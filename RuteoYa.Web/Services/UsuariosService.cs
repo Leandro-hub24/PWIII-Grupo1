@@ -1,6 +1,7 @@
 ﻿
 using RuteoYa.Web.Models;
 using System;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace RuteoYa.Web.Services;
@@ -32,7 +33,14 @@ public class UsuariosService : IUsuariosService
             // Lee el error exacto que devuelve la API para saber qué falló
             var errorContent = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"Error de API: {response.StatusCode} - {errorContent}");
-            return false;
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new Exception("No se pudo crear el usuario. Verificá los datos e intentá nuevamente.");
+            }
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                throw new Exception("Ocurrió un error inesperado al realizar el registro. Intente más tarde.");
+            }
         }
         return await response.Content.ReadFromJsonAsync<bool>();
     }

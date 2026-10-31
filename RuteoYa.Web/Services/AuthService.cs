@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using RuteoYa.Web.Models;
+using System.Data;
+using System.Net;
 using System.Security.Claims;
 
 namespace RuteoYa.Web.Services;
@@ -38,7 +40,18 @@ public class AuthService : IAuthService
 
         if(!response.IsSuccessStatusCode)
         {
-            return null;
+            // Lee el error exacto que devuelve la API para saber qué falló
+            var errorContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Error de API: {response.StatusCode} - {errorContent}");
+            if(response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new Exception("Credenciales incorrectas.");
+            }
+
+            if(response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                throw new Exception("Ocurrió un error inesperado al iniciar sesión. Intente más tarde.");
+            }
         }
 
         return await response.Content.ReadFromJsonAsync<TokenResponseDto?>();

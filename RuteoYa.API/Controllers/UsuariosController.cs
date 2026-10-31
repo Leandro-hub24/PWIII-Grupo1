@@ -17,14 +17,6 @@ namespace RuteoYa.API.Controllers
         {
             _usuariosService = usuariosService;
         }
-
-        // GET: api/usuarios
-        [HttpGet]
-        public async Task<ActionResult<List<Usuario>>> GetUsuarios()
-        {
-            var usuarios = await _usuariosService.GetUsuariosAsync();
-            return Ok(usuarios);
-        }
        
 
         // GET: api/usuarios/5

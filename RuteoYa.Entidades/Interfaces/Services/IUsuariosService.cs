@@ -8,7 +8,6 @@ namespace RuteoYa.Entidades.Interfaces.Services
 {
     public interface IUsuariosService
     {
-        Task<List<Usuario>> GetUsuariosAsync();
         Task<Usuario?> GetUsuarioPorIdAsync(int id);
         Task<UsuarioDto?> GetUsuarioPorEmailAsync(string email);
         Task<bool> CreateUsuarioAsync(Usuario usuario);

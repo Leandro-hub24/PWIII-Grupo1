@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using RuteoYa.Web.Models;
 using RuteoYa.Web.Services;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace PrototipoDeRuteaYa.Controllers
@@ -34,11 +36,6 @@ namespace PrototipoDeRuteaYa.Controllers
             try
             {
                 var resultado = await _authService.LoginAsync(model);
-                if (resultado == null)
-                {
-                    ModelState.AddModelError(string.Empty, "Credenciales incorrectas.");
-                    return View(model);
-                }
 
                 var claimsIdentity = _authService.CrearClaims(resultado);
 
@@ -50,8 +47,9 @@ namespace PrototipoDeRuteaYa.Controllers
                 return RedirectToAction( "Index","Home");
                 }
             catch (Exception ex) 
-            { 
-                return BadRequest(new { message = ex.Message }); 
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(model);
             }
             
         }

@@ -35,9 +35,6 @@
                 <div class="ry-auth-form">
                     <h1 class="fw-bold mb-4 font-space">Crear cuenta</h1>
 
-                    <!-- Resumen general de errores (opcional) -->
-                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
-
                     <form asp-controller="Usuarios" asp-action="Create" method="post">
 
                         <div class="row g-2 mb-3">
@@ -72,6 +69,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-ry-primary w-100 py-2 mb-3">Registrarse</button>
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
 
                         <div class="text-center">
                             <span class="text-secondary small">¿Ya tenés una cuenta? </span>

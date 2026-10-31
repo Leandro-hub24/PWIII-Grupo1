@@ -44,17 +44,13 @@ namespace RuteoYa.Web.Controllers
             try
             {
                 var result = await _usuariosService.CreateUsuarioAsync(model);
-                if (result)
-                {
-                    return RedirectToAction("Login", "Auth");
-                }
-                else
-                {
-                    return View("Crear", model);
-                }
+              
+                return RedirectToAction("Login", "Auth");
+               
             }
-            catch
+            catch (Exception ex) 
             {
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return View("Crear", model);
             }
         }

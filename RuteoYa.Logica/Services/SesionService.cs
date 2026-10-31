@@ -21,10 +21,10 @@ public class SesionService : ISesionService
         throw new NotImplementedException();
     }
 
-    public Task<UsuarioDto?> IniciarSesionAsync(IniciarSesionDto iniciarSesion)
+    public async Task<UsuarioDto?> IniciarSesionAsync(IniciarSesionDto iniciarSesion)
     {
 
-        var usuario = _usuariosRepositorio.GetUsuarioPorEmailAsync(iniciarSesion.Email).Result;
+        var usuario = await _usuariosRepositorio.GetUsuarioPorEmailAsync(iniciarSesion.Email);
         if (usuario == null)
         {
             throw new Exception("Usuario no encontrado.");
@@ -32,10 +32,10 @@ public class SesionService : ISesionService
 
         if (!BCrypt.Net.BCrypt.Verify(iniciarSesion.Password, usuario.PasswordHash))
         {
-            throw new Exception("Contraseña incorrecta.");
+            throw new Exception("Credenciales incorrectas.");
         }
 
-        return Task.FromResult<UsuarioDto?>(new UsuarioDto(usuario.Id, usuario.Nombre, usuario.Apellido, usuario.Email, usuario.PasswordHash, usuario.CreadoEn));
+        return new UsuarioDto(usuario.Id, usuario.Nombre, usuario.Apellido, usuario.Email, usuario.PasswordHash, usuario.CreadoEn);
     }
 
 }

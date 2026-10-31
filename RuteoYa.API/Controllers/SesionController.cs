@@ -36,7 +36,14 @@ public class SesionController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            // Si el mensaje es el que lanzamos nosotros de forma controlada, es un Bad Request (400)
+            if (ex.Message == "Usuario no encontrado." || ex.Message == "Credenciales incorrectas.")
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+            // Si es un error de base de datos, red, timeout o cualquier otra falla no controlada, devolvemos 500
+            return StatusCode(500, new { Message = "Error interno en el servidor. Intente más tarde.", Detalle = ex.Message });
         }
 
     }
