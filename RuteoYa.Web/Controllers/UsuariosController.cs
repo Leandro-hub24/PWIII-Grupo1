@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RuteoYa.Entidades.Entities;
+using RuteoYa.Web.Common;
 using RuteoYa.Web.Models;
 using RuteoYa.Web.Services;
 
@@ -20,12 +23,15 @@ namespace RuteoYa.Web.Controllers
         }
 
         // GET: Usuarios/Details/5
-        public IActionResult Details(int id)
+        [Authorize]
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var usuario = await _usuariosService.GetUsuarioByIdAsync();
+            return View(usuario);
         }
 
         [HttpGet]
+        [NoAuthRequired]
         public IActionResult Crear()
         {
             ViewData["Title"] = "Crear cuenta";
@@ -34,6 +40,7 @@ namespace RuteoYa.Web.Controllers
 
         // POST: Usuarios/Create
         [HttpPost]
+        [NoAuthRequired]
         public async Task<IActionResult> Create(RegisterViewModel model)
         {
             if (!ModelState.IsValid)

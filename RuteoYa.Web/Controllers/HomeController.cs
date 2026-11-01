@@ -8,13 +8,13 @@ namespace PrototipoDeRuteaYa.Controllers
 {
     public class HomeController : Controller
     {
-        
+        [Authorize]
         public IActionResult Index()
         {
             ViewData["Title"] = "Home";
             int userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            string emailUsuario = User.FindFirstValue(ClaimTypes.Name);
-            ViewData["nombreUsuario"] = emailUsuario ?? "Invitado";
+            string nameUsuario = User.FindFirstValue(ClaimTypes.Name);
+            ViewData["nombreUsuario"] = nameUsuario ?? "Invitado";
             return View();
         }
 

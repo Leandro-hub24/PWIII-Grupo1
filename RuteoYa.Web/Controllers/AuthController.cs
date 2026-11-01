@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
+using RuteoYa.Web.Common;
 using RuteoYa.Web.Models;
 using RuteoYa.Web.Services;
 using System.Diagnostics;
@@ -19,6 +20,7 @@ namespace PrototipoDeRuteaYa.Controllers
         }
 
         [HttpGet]
+        [NoAuthRequired]
         public IActionResult Login()
         {
             ViewData["Title"] = "Ingresar";
@@ -26,6 +28,7 @@ namespace PrototipoDeRuteaYa.Controllers
         }
 
         [HttpPost]
+        [NoAuthRequired]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if(!ModelState.IsValid)
@@ -55,6 +58,7 @@ namespace PrototipoDeRuteaYa.Controllers
         }
 
         [HttpGet]
+        [NoAuthRequired]
         public IActionResult Register()
         {
             ViewData["Title"] = "Crear cuenta";

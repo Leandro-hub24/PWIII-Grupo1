@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RuteoYa.API.Filters;
 using RuteoYa.Entidades.DTOs;
 using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Services;
 using RuteoYa.Logica.Services;
+using System.Security.Claims;
 
 namespace RuteoYa.API.Controllers
 {
@@ -17,13 +20,22 @@ namespace RuteoYa.API.Controllers
         {
             _usuariosService = usuariosService;
         }
-       
 
-        // GET: api/usuarios/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Usuario>> GetUsuarioPorId(int id)
+
+        // GET: api/usuarios/mi-cuenta
+        [HttpGet("mi-cuenta")]
+        [Authorize]
+        public async Task<ActionResult<Usuario>> GetUsuarioPorId()
         {
-            var usuario = await _usuariosService.GetUsuarioPorIdAsync(id);
+            // 1. Extraer el ID directamente desde los Claims del Token JWT
+            string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int usuarioId))
+            {
+                return Unauthorized(new { mensaje = "No se pudo identificar al usuario desde el token." });
+            }
+
+            var usuario = await _usuariosService.GetUsuarioPorIdAsync(usuarioId);
 
             if (usuario == null)
             {
@@ -35,6 +47,7 @@ namespace RuteoYa.API.Controllers
 
         // POST: api/usuarios/create
         [HttpPost("create")]
+        [NoAuthRequiredApi]
         public async Task<ActionResult<bool>> CreateUsuario([FromBody] Usuario usuario)
         {
             if (!ModelState.IsValid)
@@ -60,37 +73,63 @@ namespace RuteoYa.API.Controllers
       
         }
 
-        // PUT: api/usuarios/5
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateUsuario(int id, [FromBody] Usuario usuario)
+        // PUT: api/usuarios/mi-cuenta
+        [HttpPut("mi-cuenta")]
+        [Authorize]
+        public async Task<ActionResult> UpdateUsuario([FromBody] Usuario usuario)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState); 
             }
 
-            var actualizado = await _usuariosService.UpdateUsuarioAsync(id, usuario);
-
-            if (!actualizado)
+            try
             {
-                return NotFound($"No se encontró el usuario con ID {id} para actualizar.");
+                // 1. Extraer el ID directamente desde los Claims del Token JWT
+                string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int usuarioId))
+                {
+                    return Unauthorized(new { mensaje = "No se pudo identificar al usuario desde el token." });
+                }
+
+                var actualizado = await _usuariosService.UpdateUsuarioAsync(usuarioId, usuario);
+
+                return Ok(new { mensaje = "Tu cuenta ha sido actualizada exitosamente." });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
             }
 
-            return NoContent(); // 204 No Content indica éxito sin necesidad de retornar cuerpo
+           
         }
 
-        // DELETE: api/usuarios/5
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> DeleteUsuario(int id)
+        // DELETE: api/usuarios/mi-cuenta
+        [HttpDelete("mi-cuenta")]
+        [Authorize]
+        public async Task<IActionResult> EliminarMiCuenta()
         {
-            var eliminado = await _usuariosService.DeleteUsuarioAsync(id);
-
-            if (!eliminado)
+            try
             {
-                return NotFound($"No se encontró el usuario con ID {id} para eliminar.");
-            }
+                // 1. Extraer el ID directamente desde los Claims del Token JWT
+                string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return NoContent();
+                if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int usuarioId))
+                {
+                    return Unauthorized(new { mensaje = "No se pudo identificar al usuario desde el token." });
+                }
+
+                // 2. Ejecutar la baja lógica o física en la base de datos usando ese ID seguro
+                await _usuariosService.DeleteUsuarioAsync(usuarioId);
+
+                return Ok(new { mensaje = "Tu cuenta ha sido eliminada exitosamente." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
         }
     }
 }

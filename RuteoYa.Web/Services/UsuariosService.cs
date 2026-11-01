@@ -1,4 +1,5 @@
 ﻿
+using RuteoYa.Entidades.Entities;
 using RuteoYa.Web.Models;
 using System;
 using System.Net;
@@ -8,7 +9,7 @@ namespace RuteoYa.Web.Services;
 
 public interface IUsuariosService
 {
-    Task<LoginViewModel?> GetUsuarioByIdAsync(int id);
+    Task<Usuario?> GetUsuarioByIdAsync();
     Task<bool> CreateUsuarioAsync(RegisterViewModel model);
 }
 public class UsuariosService : IUsuariosService
@@ -19,9 +20,9 @@ public class UsuariosService : IUsuariosService
         _httpClient = httpClientFactory.CreateClient("MiApi");
     }
 
-    public async Task<LoginViewModel?> GetUsuarioByIdAsync(int id)
+    public async Task<Usuario?> GetUsuarioByIdAsync()
     {
-        return await _httpClient.GetFromJsonAsync<LoginViewModel?>($"api/usuarios/{id}");
+        return await _httpClient.GetFromJsonAsync<Usuario?>($"api/usuarios/mi-cuenta");
         
     }
 

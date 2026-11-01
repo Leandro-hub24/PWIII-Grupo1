@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RuteoYa.API.Filters;
 using RuteoYa.Entidades.DTOs;
 using RuteoYa.Entidades.Interfaces.Services;
 
@@ -20,6 +21,7 @@ public class SesionController : ControllerBase
     }
 
     [HttpPost("login")]
+    [NoAuthRequiredApi]
     public async Task<ActionResult> IniciarSesion([FromBody] IniciarSesionDto iniciarSesion)
     {
 
