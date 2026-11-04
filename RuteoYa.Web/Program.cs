@@ -1,11 +1,40 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
+using RuteoYa.Web.Common;
 using RuteoYa.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login"; // Dónde redirigir si no está autenticado
+        options.ExpireTimeSpan = TimeSpan.FromHours(2); // Tiempo de vida de la cookie local
+
+        // Configuraciones de seguridad estrictas de la cookie
+        options.Cookie.Name = "MiApp.AuthCookie";
+        options.Cookie.HttpOnly = true;  // Inaccesible para JavaScript (Protección contra XSS)
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Usa HTTPS si la petición lo es
+        options.Cookie.SameSite = SameSiteMode.Lax; // O Strict según tus necesidades de redirección
+    });
+
+// Necesario para que el DelegatingHandler pueda leer la sesión del usuario
+builder.Services.AddHttpContextAccessor();
+
+// Registrar nuestro handler personalizado
+builder.Services.AddTransient<TokenDelegatingHandler>();
+
+builder.Services.AddHttpClient("MiApi", client =>
+{
+    // Reemplaza esto con el puerto y URL real donde corre tu Web API
+    client.BaseAddress = new Uri("https://localhost:7019/");
+})
+    .AddHttpMessageHandler<TokenDelegatingHandler>();
 
 builder.Services.AddControllersWithViews();
 
@@ -22,13 +51,14 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Auth}/{action=Login}/{id?}")
+    pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

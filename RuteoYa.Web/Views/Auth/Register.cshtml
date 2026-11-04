@@ -1,8 +1,88 @@
-﻿<form asp-controller="Auth" asp-action="Register" method="post">
-    <!-- Campos del formulario -->
-    ...
-    <div class="text-center">
-        <span class="text-secondary small">¿Ya tenés cuenta? </span>
-        <a asp-controller="Auth" asp-action="Login" class="text-white fw-semibold small text-decoration-underline">Ingresar</a>
+﻿@model RuteoYa.Web.Models.RegisterViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Crear cuenta";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RuteaYa</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body style="background-color: var(--bg); margin: 0; padding: 0;">
+
+    <div class="container-fluid p-0">
+        <div class="row g-0 min-vh-100">
+
+            <!-- Banner Izquierdo -->
+            <div class="col-lg-6 d-none d-lg-flex ry-auth-left">
+                <div class="brand fs-4 fw-bold font-space">RuteaYa</div>
+                <div>
+                    <h1 class="fw-bold font-space">Convertí tus viajes habituales en una oportunidad.</h1>
+                    <p>Compartí el espacio libre de tus recorridos y ganá dinero llevando paquetes.</p>
+                </div>
+                <div></div>
+            </div>
+
+            <!-- Formulario Derecho -->
+            <div class="col-12 col-lg-6 ry-auth-right">
+                <div class="ry-auth-form">
+                    <h1 class="fw-bold mb-4 font-space">Crear cuenta</h1>
+
+                    <!-- Resumen general de errores (opcional) -->
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                    <form asp-controller="Usuarios" asp-action="Create" method="post">
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label asp-for="Nombre" class="form-label fw-semibold small">Nombre</label>
+                                <input asp-for="Nombre" class="form-control ry-input" placeholder="Tu nombre" />
+                                <span asp-validation-for="Nombre" class="text-danger small"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="Apellido" class="form-label fw-semibold small">Apellido</label>
+                                <input asp-for="Apellido" class="form-control ry-input" placeholder="Tu apellido" />
+                                <span asp-validation-for="Apellido" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold small">Email</label>
+                            <input asp-for="Email" class="form-control ry-input" placeholder="tu@email.com" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PasswordHash" class="form-label fw-semibold small">Contraseña</label>
+                            <input asp-for="PasswordHash" class="form-control ry-input" placeholder="••••••••" />
+                            <span asp-validation-for="PasswordHash" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="PasswordConfirmed" class="form-label fw-semibold small">Repetir contraseña</label>
+                            <input asp-for="PasswordConfirmed" class="form-control ry-input" placeholder="••••••••" />
+                            <span asp-validation-for="PasswordConfirmed" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-ry-primary w-100 py-2 mb-3">Registrarse</button>
+
+                        <div class="text-center">
+                            <span class="text-secondary small">¿Ya tenés una cuenta? </span>
+                            <a asp-controller="Auth" asp-action="Login" class="text-white fw-semibold small text-decoration-underline">Ingresar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </div>
-</form>
+
+</body>
+</html>

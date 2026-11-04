@@ -55,8 +55,10 @@
 
                     <!-- Usuario a la derecha en PC -->
                     <div class="d-flex align-items-center gap-3">
-                        <span class="text-white small fw-semibold">Juan Pérez</span>
-                        <a class="btn btn-outline-light btn-sm rounded-3 px-3" asp-controller="Auth" asp-action="Logout">Cerrar sesión</a>
+                        <span class="text-white small fw-semibold">@(ViewData["nombreUsuario"] ?? "Usuario")</span>
+                        <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-light btn-sm rounded-3 px-3">Cerrar sesión</button>
+                        </form>
                     </div>
                 </div>
 
@@ -79,7 +81,9 @@
                     <div class="avatar-circle">JP</div>
                     <span class="text-white fw-semibold small">Juan Pérez</span>
                 </div>
-                <a class="btn btn-outline-light btn-sm rounded-3 px-2 py-1 fs-7" asp-controller="Auth" asp-action="Logout">Salir</a>
+                <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm rounded-3 px-2 py-1 fs-7">Salir</button>
+                </form>
             </div>
         </div>
 

@@ -1,5 +1,6 @@
 ﻿using RuteoYa.Entidades.Interfaces.Repositories;
 using RuteoYa.Entidades.Entities;
+using RuteoYa.Entidades.DTOs;
 using RuteoYa.Entidades.Interfaces.Services;
 namespace RuteoYa.Logica.Services
 
@@ -28,9 +29,15 @@ namespace RuteoYa.Logica.Services
             return await _usuariosRepositorio.DeleteUsuario(id);
         }
 
-        public async Task<Usuario?> GetUsuarioPorEmailAsync(string email)
+        public async Task<UsuarioDto?> GetUsuarioPorEmailAsync(string email)
         {
-            return await _usuariosRepositorio.GetUsuarioPorEmail(email);
+            var usuario = await _usuariosRepositorio.GetUsuarioPorEmailAsync(email);
+            if (usuario == null)
+            {
+                return null;
+            }
+
+            return usuario;
         }
 
         public async Task<Usuario?> GetUsuarioPorIdAsync(int id)

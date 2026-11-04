@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RuteoYa.Entidades.Entities;
+using RuteoYa.Web.Common;
+using RuteoYa.Web.Models;
 using RuteoYa.Web.Services;
 
 namespace RuteoYa.Web.Controllers
@@ -12,41 +16,54 @@ namespace RuteoYa.Web.Controllers
         {
             _usuariosService = usuariosService;
         }
-        // GET: UsuariosController
-        public ActionResult Index()
+        // GET: Usuarios
+        public IActionResult Index()
         {
             return View();
         }
 
-        // GET: UsuariosController/Details/5
-        public ActionResult Details(int id)
+        // GET: Usuarios/Details/5
+        [Authorize]
+        public async Task<IActionResult> Details(int id)
         {
+            var usuario = await _usuariosService.GetUsuarioByIdAsync();
+            return View(usuario);
+        }
+
+        [HttpGet]
+        [NoAuthRequired]
+        public IActionResult Crear()
+        {
+            ViewData["Title"] = "Crear cuenta";
             return View();
         }
 
-        // GET: UsuariosController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: UsuariosController/Create
+        // POST: Usuarios/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [NoAuthRequired]
+        public async Task<IActionResult> Create(RegisterViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Crear", model);
+            }
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _usuariosService.CreateUsuarioAsync(model);
+              
+                return RedirectToAction("Login", "Auth");
+               
             }
-            catch
+            catch (Exception ex) 
             {
-                return View();
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View("Crear", model);
             }
         }
 
         // GET: UsuariosController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View();
         }
@@ -54,7 +71,7 @@ namespace RuteoYa.Web.Controllers
         // POST: UsuariosController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -67,7 +84,7 @@ namespace RuteoYa.Web.Controllers
         }
 
         // GET: UsuariosController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             return View();
         }
