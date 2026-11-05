@@ -1,0 +1,76 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model RuteoYa.Entidades.DTOs.DetalleOportunidadDto
+@{
+    ViewData["Title"] = "Detalle de oportunidad";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Detalle de oportunidad</h2>
+            <p class="text-muted">@Model.Origen → @Model.Destino</p>
+        </div>
+        <a asp-action="Index" asp-route-viajeId="@Model.ViajeId" class="btn btn-outline-secondary">Volver</a>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="row">
+        
+        <div class="col-md-7">
+            <div class="card p-4 shadow-sm border-0 rounded-3">
+                <h5 class="font-weight-bold mb-4">Ruta habitual vs. con el envío</h5>
+
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <span class="text-muted">Distancia habitual</span>
+                    <span class="font-weight-bold">@Model.DistanciaHabitualKm km</span>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <span class="text-muted">Distancia con el envío</span>
+                    <span class="font-weight-bold">@Model.DistanciaConEnvioKm km</span>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <span class="text-muted">Desvío</span>
+                    <span class="font-weight-bold">@Model.DesvioKm km</span>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <span class="text-muted">Tiempo habitual</span>
+                    <span class="font-weight-bold">@Model.TiempoHabitualMin min</span>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <span class="text-muted">Tiempo adicional</span>
+                    <span class="font-weight-bold text-primary">+@Model.TiempoAdicionalMin min</span>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <span class="text-muted">Peso</span>
+                    <span class="font-weight-bold">@Model.PesoKg kg</span>
+                </div>
+                <div class="d-flex justify-content-between py-2">
+                    <span class="text-muted">Capacidad restante</span>
+                    <span class="font-weight-bold">@Model.CapacidadRestanteKg kg · @Model.PaquetesRestantes paquetes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card p-4 shadow-sm border-0 rounded-3" style="background-color: #e8f5e9;">
+                <span class="text-muted">Pago</span>
+                <h1 class="display-4 font-weight-bold text-success my-2">$@Model.Pago.ToString("N0")</h1>
+                <p class="text-success mb-4">$@Model.GananciaPorKmAdicional.ToString("N2") por km adicional</p>
+
+                <form asp-action="AceptarEnvio" method="post">
+                    <input type="hidden" name="envioId" value="@Model.EnvioId" />
+                    <input type="hidden" name="viajeId" value="@Model.ViajeId" />
+                    <button type="submit" class="btn btn-dark w-100 py-3 font-weight-bold">Aceptar envío</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

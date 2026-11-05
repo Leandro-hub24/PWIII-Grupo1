@@ -1,4 +1,5 @@
 using RuteoYa.Entidades;
+using RuteoYa.Entidades.Entities;
 using RuteoYa.Web.Models;
 using RuteoYa.Web.Services;
 

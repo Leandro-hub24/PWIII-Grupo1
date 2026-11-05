@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RuteoYa.Entidades;
+using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Services;
 using RuteoYa.Web.Models;
 

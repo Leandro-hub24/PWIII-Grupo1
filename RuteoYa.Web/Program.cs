@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
 using RuteoYa.Web;
+using RuteoYa.Web.Logic;
+using RuteoYa.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,10 @@ builder.Services.AddDbContext<RuteoYaDbContext>();
 var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7001";
 builder.Services.AddWebServices(apiBaseUrl);
 
-
+builder.Services.AddScoped<IOportunidadesApiService, OportunidadesApiService>();
+builder.Services.AddScoped<OportunidadesOrchestrator>();
 // Add services to the container.
+
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 
 
