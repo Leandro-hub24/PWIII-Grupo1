@@ -26,6 +26,7 @@ builder.Services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<ISesionService, SesionService>();
 
 builder.Services.AddHttpClient<IGeocoderService, GeocoderService>();
+builder.Services.AddHttpClient<IDistanciaService, DistanciaService>();
 
 builder.Services.AddOpenApi();
 

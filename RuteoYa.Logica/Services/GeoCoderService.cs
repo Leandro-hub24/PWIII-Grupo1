@@ -27,7 +27,9 @@ public class GeocoderService : IGeocoderService
         // Codificar la dirección por si tiene espacios o caracteres especiales (ej: "5 Rue Daunou, Paris")
         var direccionCodificada = Uri.EscapeDataString(direccion);
 
-        var url = $"https://geocode.search.hereapi.com/v1/geocode?q={direccionCodificada}&apiKey={_apiKey}";
+        var url = $"https://geocode.search.hereapi.com/v1/geocode" +
+            $"?q={direccionCodificada}" +
+            $"&apiKey={_apiKey}";
 
         var response = await _httpClient.GetAsync(url);
 
