@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
 using RuteoYa.Entidades.Interfaces.Repositories;
 using RuteoYa.Entidades.Interfaces.Services;
-using RuteoYa.Logica.Repositories;
 using RuteoYa.Logica.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,9 +23,30 @@ builder.Services.AddControllers()
      options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
  });
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+
+
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<ISesionService, SesionService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddHttpClient<IGeocoderService, GeocoderService>();
 builder.Services.AddHttpClient<IDistanciaService, DistanciaService>();
@@ -46,6 +69,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
