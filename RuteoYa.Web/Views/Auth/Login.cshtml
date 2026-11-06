@@ -38,19 +38,20 @@
                         
                         <div class="mb-3">
                             <label class="form-label fw-semibold small">Email</label>
-                            <input type="email" name="email" class="form-control ry-input" placeholder="tu@email.com" required />
+                            <input type="email" name="Email" class="form-control ry-input" placeholder="tu@email.com" required />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-semibold small">Contraseña</label>
-                            <input type="password" name="password" class="form-control ry-input" placeholder="••••••••" required />
+                            <input type="password" name="Password" class="form-control ry-input" placeholder="••••••••" required />
                         </div>
 
                         <button type="submit" class="btn btn-ry-primary w-100 py-2 mb-3">Ingresar</button>
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
 
                         <div class="text-center">
                             <span class="text-secondary small">¿Todavía no tenés una cuenta? </span>
-                            <a asp-controller="Auth" asp-action="Register" class="text-white fw-semibold small text-decoration-underline">Crear cuenta</a>
+                            <a asp-controller="Usuarios" asp-action="Crear" class="text-white fw-semibold small text-decoration-underline">Crear cuenta</a>
                         </div>
                     </form>
                 </div>
