@@ -11,10 +11,10 @@ public static class DependencyInjection
     /// </summary>
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
-       
+
 
         // Servicios de mapas/distancia (mock hasta integrar APIs reales)
-        services.AddScoped<IGeocoderService, MockGeocoderService>();
+        services.AddScoped<IGeocoderService, GeocoderService>();
         services.AddScoped<IDistanciaService, MockDistanciaService>();
 
         return services;

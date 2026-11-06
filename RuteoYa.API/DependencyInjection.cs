@@ -1,4 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
+using RuteoYa.Entidades.Interfaces.Services;
+using RuteoYa.Logica.Services;
 
 namespace RuteoYa.API;
 
@@ -11,7 +12,7 @@ public static class DependencyInjection
     {
         // Ejemplo: services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)...
         // Ejemplo: services.AddSwaggerGen(options => { ... });
-
+        services.AddHttpClient<IGeocoderService, GeocoderService>();
         return services;
     }
 }

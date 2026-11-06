@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 namespace RuteoYa.Entidades;
 
 public class RuteoYaDbContext : DbContext
@@ -28,7 +25,7 @@ public class RuteoYaDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-       
+
         modelBuilder.Entity<Envio>(entity =>
         {
             entity.HasOne(e => e.Usuario)

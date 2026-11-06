@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RuteoYa.Entidades.Interfaces.Services
+﻿namespace RuteoYa.Entidades.Interfaces.Services
 {
     public interface ISesionService
     {

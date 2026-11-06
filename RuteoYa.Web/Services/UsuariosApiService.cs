@@ -1,5 +1,4 @@
 using RuteoYa.Entidades.DTOs;
-using System.Net.Http.Json;
 
 namespace RuteoYa.Web.Services;
 
@@ -36,7 +35,7 @@ public class UsuariosApiService : IUsuariosApiService
         try
         {
             var response = await _httpClient.GetAsync($"api/usuarios/{id}");
-            
+
             if (!response.IsSuccessStatusCode)
                 return null;
 

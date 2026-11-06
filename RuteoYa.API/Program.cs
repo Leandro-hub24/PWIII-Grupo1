@@ -11,7 +11,9 @@ builder.Services.AddSwaggerGen();
 // Add services to the container.
 
 builder.Services.AddDbContext<RuteoYaDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CadenaConexion")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 builder.Services.AddControllers()
 .AddJsonOptions(options =>
@@ -23,6 +25,7 @@ builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<ISesionService, SesionService>();
 
+builder.Services.AddHttpClient<IGeocoderService, GeocoderService>();
 
 builder.Services.AddOpenApi();
 

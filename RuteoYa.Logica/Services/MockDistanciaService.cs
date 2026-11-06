@@ -24,8 +24,8 @@ public class MockDistanciaService : IDistanciaService
     public async Task<DistanciaRutaDto> CalcularAsync(string origenDireccion, string destinoDireccion)
     {
         // Geocodifica ambos extremos (también mock por ahora)
-        var origen = await _geocoder.GeocodeAsync(origenDireccion);
-        var destino = await _geocoder.GeocodeAsync(destinoDireccion);
+        var origen = await _geocoder.ObtenerCoordenadasAsync(origenDireccion);
+        var destino = await _geocoder.ObtenerCoordenadasAsync(destinoDireccion);
 
         // TODO: reemplazar con llamada real a OSRM o Google Directions API
         // usando origen.Lat, origen.Lng, destino.Lat, destino.Lng

@@ -10,6 +10,6 @@ public class UsuarioDto
     public string Apellido { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public DateTime CreadoEn { get; set; }
-    
+
     public string NombreCompleto => $"{Nombre} {Apellido}";
 }

@@ -1,9 +1,9 @@
-﻿using RuteoYa.Entidades.Interfaces.Repositories;
-using RuteoYa.Entidades.Entities;
+﻿using RuteoYa.Entidades.Entities;
+using RuteoYa.Entidades.Interfaces.Repositories;
 using RuteoYa.Entidades.Interfaces.Services;
 namespace RuteoYa.Logica.Services
 
-{   
+{
 
     public class UsuariosService : IUsuariosService
     {
@@ -47,6 +47,6 @@ namespace RuteoYa.Logica.Services
         {
             return await _usuariosRepositorio.UpdateUsuario(id, usuario);
         }
-        
+
     }
 }

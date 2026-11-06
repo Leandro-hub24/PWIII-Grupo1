@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Json;
-using System;
-using RuteoYa.Entidades.Entities;
+﻿using RuteoYa.Entidades.Entities;
 
 namespace RuteoYa.Web.Services;
 
@@ -15,7 +13,7 @@ public class UsuariosService : IUsuariosService
         using var client = new HttpClient();
         var result = await client.GetFromJsonAsync<Usuario?>("https://localhost:7019/api/usuarios/{id}");
         return result;
-        
+
     }
 
 }

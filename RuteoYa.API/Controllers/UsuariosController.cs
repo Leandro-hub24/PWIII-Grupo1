@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Services;
-using RuteoYa.Logica.Services;
 
 namespace RuteoYa.API.Controllers
 {
@@ -65,7 +63,7 @@ namespace RuteoYa.API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); 
+                return BadRequest(ModelState);
             }
 
             var actualizado = await _usuariosLogica.UpdateUsuarioAsync(id, usuario);

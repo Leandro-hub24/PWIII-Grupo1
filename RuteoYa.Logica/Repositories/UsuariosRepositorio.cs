@@ -2,9 +2,6 @@
 using RuteoYa.Entidades;
 using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RuteoYa.Logica.Repositories;
 
@@ -21,7 +18,7 @@ public class UsuariosRepositorio : IUsuariosRepositorio
     public Task<List<Usuario>> GetUsuarios()
     {
         return _context.Usuarios.ToListAsync();
-    }               
+    }
 
     public Task<Usuario?> GetUsuarioPorId(int id)
     {
@@ -55,5 +52,5 @@ public class UsuariosRepositorio : IUsuariosRepositorio
         return await _context.SaveChangesAsync() > 0;
     }
 
-    
+
 }
