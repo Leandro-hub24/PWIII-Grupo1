@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Web + API",
+    "Projects": [
+      {
+        "Path": "RuteoYa.API\\RuteoYa.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "RuteoYa.Web\\RuteoYa.Web.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
