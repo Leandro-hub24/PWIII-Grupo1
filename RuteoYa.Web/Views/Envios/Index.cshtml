@@ -1,0 +1,67 @@
+@using RuteoYa.Entidades.Common.Enums
+@using RuteoYa.Entidades.Common.Helpers
+@model List<RuteoYa.Entidades.DTOs.EnvioDto>
+@{
+    ViewData["Title"] = "Mis envíos";
+    var estadoActual = ViewBag.EstadoActual as EstadoEnvio?;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="font-space fw-bold mb-0">Mis envíos</h2>
+        <p class="text-muted mb-0">Paquetes que publicaste para que un conductor los lleve.</p>
+    </div>
+    <a asp-action="Crear" class="btn btn-ry-primary">+ Nuevo envío</a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+<!-- Filtro por estado -->
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a asp-action="Index" class="btn btn-sm @(estadoActual == null ? "btn-dark" : "btn-outline-secondary")">Todos</a>
+    @foreach (var e in Enum.GetValues<EstadoEnvio>())
+    {
+        <a asp-action="Index" asp-route-estado="@((byte)e)"
+           class="btn btn-sm @(estadoActual == e ? "btn-dark" : "btn-outline-secondary")">@EstadoEnvioReglas.Nombre(e)</a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No tenés envíos@(estadoActual != null ? " en este estado" : "").</div>
+}
+else
+{
+    <div class="table-responsive ry-card p-2">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Origen → Destino</th>
+                    <th>Peso</th>
+                    <th>Monto</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var envio in Model)
+                {
+                    <tr>
+                        <td>@envio.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@envio.OrigenDir → @envio.DestinoDir</td>
+                        <td>@envio.PesoKg kg</td>
+                        <td>$@envio.Monto.ToString("N0")</td>
+                        <td><partial name="_EstadoEnvioBadge" model="envio.Estado" /></td>
+                        <td class="text-end">
+                            <a asp-action="Detalle" asp-route-id="@envio.Id" class="btn btn-sm btn-ry-outline">Ver detalle</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using RuteoYa.Entidades;
 
 #nullable disable
 
@@ -21,7 +22,7 @@ namespace RuteoYa.Entidades.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("RuteoYa.Entidades.Asignacion", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Asignacion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +55,7 @@ namespace RuteoYa.Entidades.Migrations
                     b.ToTable("Asignaciones");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Envio", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Envio", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,7 +63,7 @@ namespace RuteoYa.Entidades.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AsignacionId")
+                    b.Property<int?>("AsignacionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreadoEn")
@@ -81,9 +82,6 @@ namespace RuteoYa.Entidades.Migrations
 
                     b.Property<decimal>("DestinoLng")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("EnvioEstadoHistorialId")
-                        .HasColumnType("int");
 
                     b.Property<byte>("Estado")
                         .HasColumnType("tinyint");
@@ -125,7 +123,7 @@ namespace RuteoYa.Entidades.Migrations
                     b.ToTable("Envios");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.EnvioEstadoHistorial", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.EnvioEstadoHistorial", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +150,7 @@ namespace RuteoYa.Entidades.Migrations
                     b.ToTable("EnvioEstadoHistoriales");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Parada", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Parada", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -183,7 +181,7 @@ namespace RuteoYa.Entidades.Migrations
                     b.ToTable("Paradas");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Usuario", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -221,9 +219,22 @@ namespace RuteoYa.Entidades.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Apellido = "Sistema",
+                            CreadoEn = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "admin@ruteoya.com",
+                            EnvioId = 0,
+                            Nombre = "Admin",
+                            PasswordHash = "$2a$11$xKvLhR4QZJvKZN8Y5Y8wWeF.0KK/jZqR6HjF4V5hFhqE3YHxMYGhK",
+                            ViajeId = 0
+                        });
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Viaje", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Viaje", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -287,7 +298,7 @@ namespace RuteoYa.Entidades.Migrations
                     b.ToTable("Viajes");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.ViajeDia", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.ViajeDia", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -308,9 +319,9 @@ namespace RuteoYa.Entidades.Migrations
                     b.ToTable("ViajeDias");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Asignacion", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Asignacion", b =>
                 {
-                    b.HasOne("RuteoYa.Entidades.Viaje", "Viaje")
+                    b.HasOne("RuteoYa.Entidades.Entities.Viaje", "Viaje")
                         .WithMany("Asignaciones")
                         .HasForeignKey("ViajeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,15 +330,13 @@ namespace RuteoYa.Entidades.Migrations
                     b.Navigation("Viaje");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Envio", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Envio", b =>
                 {
-                    b.HasOne("RuteoYa.Entidades.Asignacion", "Asignacion")
+                    b.HasOne("RuteoYa.Entidades.Entities.Asignacion", "Asignacion")
                         .WithMany()
-                        .HasForeignKey("AsignacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AsignacionId");
 
-                    b.HasOne("RuteoYa.Entidades.Usuario", "Usuario")
+                    b.HasOne("RuteoYa.Entidades.Entities.Usuario", "Usuario")
                         .WithMany("Envios")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -338,9 +347,9 @@ namespace RuteoYa.Entidades.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.EnvioEstadoHistorial", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.EnvioEstadoHistorial", b =>
                 {
-                    b.HasOne("RuteoYa.Entidades.Envio", "Envio")
+                    b.HasOne("RuteoYa.Entidades.Entities.Envio", "Envio")
                         .WithMany("EnvioEstadoHistorial")
                         .HasForeignKey("EnvioId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,9 +358,9 @@ namespace RuteoYa.Entidades.Migrations
                     b.Navigation("Envio");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Parada", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Parada", b =>
                 {
-                    b.HasOne("RuteoYa.Entidades.Viaje", "viaje")
+                    b.HasOne("RuteoYa.Entidades.Entities.Viaje", "viaje")
                         .WithMany("Paradas")
                         .HasForeignKey("ViajeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -360,9 +369,9 @@ namespace RuteoYa.Entidades.Migrations
                     b.Navigation("viaje");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Viaje", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Viaje", b =>
                 {
-                    b.HasOne("RuteoYa.Entidades.Usuario", "Usuario")
+                    b.HasOne("RuteoYa.Entidades.Entities.Usuario", "Usuario")
                         .WithMany("Viajes")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -371,9 +380,9 @@ namespace RuteoYa.Entidades.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.ViajeDia", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.ViajeDia", b =>
                 {
-                    b.HasOne("RuteoYa.Entidades.Viaje", "Viaje")
+                    b.HasOne("RuteoYa.Entidades.Entities.Viaje", "Viaje")
                         .WithMany("ViajeDias")
                         .HasForeignKey("ViajeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -382,19 +391,19 @@ namespace RuteoYa.Entidades.Migrations
                     b.Navigation("Viaje");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Envio", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Envio", b =>
                 {
                     b.Navigation("EnvioEstadoHistorial");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Usuario", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Usuario", b =>
                 {
                     b.Navigation("Envios");
 
                     b.Navigation("Viajes");
                 });
 
-            modelBuilder.Entity("RuteoYa.Entidades.Viaje", b =>
+            modelBuilder.Entity("RuteoYa.Entidades.Entities.Viaje", b =>
                 {
                     b.Navigation("Asignaciones");
 

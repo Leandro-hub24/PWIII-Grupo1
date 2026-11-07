@@ -18,6 +18,7 @@ builder.Services.AddWebServices(apiBaseUrl);
 // Add services to the container.
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEnviosApiService, EnviosApiService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

@@ -1,0 +1,73 @@
+@using RuteoYa.Entidades.Common.Enums
+@model RuteoYa.Entidades.DTOs.CrearEnvioDto
+@{
+    ViewData["Title"] = "Nuevo envío";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <h2 class="font-space fw-bold mb-1">Nuevo envío</h2>
+        <p class="text-muted">Publicá un paquete y los conductores que pasen cerca lo van a ver.</p>
+
+        <div class="ry-card p-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+            <form asp-action="Crear" method="post">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="OrigenDir" class="ry-label">Origen</label>
+                        <input asp-for="OrigenDir" class="form-control ry-input" placeholder="Ej: San Justo, Buenos Aires" />
+                        <span asp-validation-for="OrigenDir" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DestinoDir" class="ry-label">Destino</label>
+                        <input asp-for="DestinoDir" class="form-control ry-input" placeholder="Ej: Palermo, CABA" />
+                        <span asp-validation-for="DestinoDir" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Fecha" class="ry-label">Fecha</label>
+                        <input asp-for="Fecha" type="date" class="form-control ry-input" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="Fecha" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="PesoKg" class="ry-label">Peso (kg)</label>
+                        <input asp-for="PesoKg" type="number" step="0.1" min="0.1" class="form-control ry-input" />
+                        <span asp-validation-for="PesoKg" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Tamano" class="ry-label">Tamaño</label>
+                        <select asp-for="Tamano" class="form-select ry-input">
+                            <option value="">Elegí un tamaño</option>
+                            <option value="@TamanoEnvio.Pequeno">Pequeño</option>
+                            <option value="@TamanoEnvio.Mediano">Mediano</option>
+                            <option value="@TamanoEnvio.Grande">Grande</option>
+                        </select>
+                        <span asp-validation-for="Tamano" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Descripcion" class="ry-label">Descripción</label>
+                        <textarea asp-for="Descripcion" rows="3" class="form-control ry-input" placeholder="Qué es, si es frágil, etc."></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Monto" class="ry-label">Monto ofrecido ($)</label>
+                        <input asp-for="Monto" type="number" step="1" min="1" class="form-control ry-input" />
+                        <span asp-validation-for="Monto" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-ry-primary">Publicar envío</button>
+                    <a asp-action="Index" class="btn btn-ry-outline">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
