@@ -49,6 +49,8 @@ builder.Services.AddScoped<ISesionService, SesionService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IEnviosRepositorio, RuteoYa.Logica.Repositories.EnviosRepositorio>();
 builder.Services.AddScoped<IEnviosService, EnviosService>();
+builder.Services.AddScoped<IViajesRepositorio, RuteoYa.Logica.Repositories.ViajesRepositorio>();
+builder.Services.AddScoped<IViajesService, ViajesService>();
 
 builder.Services.AddHttpClient<IGeocoderService, GeocoderService>();
 builder.Services.AddHttpClient<IDistanciaService, DistanciaService>();
