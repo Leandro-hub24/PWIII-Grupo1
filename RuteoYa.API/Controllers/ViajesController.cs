@@ -51,6 +51,26 @@ public class ViajesController : ControllerBase
         return CreatedAtAction(nameof(GetViaje), new { id = resultado.Valor!.Id }, resultado.Valor);
     }
 
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(ViajeDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ViajeDto>> ActualizarViaje(int id, [FromBody] CrearViajeDto dto)
+    {
+        if (!ModelState.IsValid) return ValidationProblem(ModelState);
+        if (UsuarioId() is not int usuarioId) return Unauthorized();
+        return Responder(await _viajesService.ActualizarViajeAsync(usuarioId, id, dto));
+    }
+
+    [HttpPost("calcular-ruta")]
+    [ProducesResponseType(typeof(RutaViajeDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<RutaViajeDto>> CalcularRuta([FromBody] CalcularRutaDto dto)
+    {
+        if (!ModelState.IsValid) return ValidationProblem(ModelState);
+        return Responder(await _viajesService.CalcularRutaAsync(dto));
+    }
+
     [HttpPut("{id:int}/desactivar")]
     [ProducesResponseType(typeof(ViajeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

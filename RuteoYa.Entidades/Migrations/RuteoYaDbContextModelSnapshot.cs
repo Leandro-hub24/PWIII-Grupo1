@@ -248,6 +248,10 @@ namespace RuteoYa.Entidades.Migrations
                     b.Property<int>("AsignacionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("DestinoDir")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("DestinoLat")
                         .HasColumnType("decimal(18,2)");
 

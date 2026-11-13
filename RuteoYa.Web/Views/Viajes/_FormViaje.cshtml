@@ -1,0 +1,87 @@
+@using RuteoYa.Web.Models
+@model ViajeFormViewModel
+
+<div class="ry-card p-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+    <form method="post">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="OrigenDir" class="ry-label"></label>
+                <input asp-for="OrigenDir" class="form-control ry-input" />
+                <span asp-validation-for="OrigenDir" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DestinoDir" class="ry-label"></label>
+                <input asp-for="DestinoDir" class="form-control ry-input" />
+                <span asp-validation-for="DestinoDir" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12">
+                <label class="ry-label">Paradas intermedias (opcional, en orden)</label>
+                @for (int i = 0; i < Math.Max(3, Model.Paradas.Count); i++)
+                {
+                    var valor = i < Model.Paradas.Count ? Model.Paradas[i] : "";
+                    <input type="text" name="Paradas" value="@valor" class="form-control ry-input mb-2" placeholder="Parada @(i + 1)" />
+                }
+            </div>
+
+            <div class="col-12">
+                <label class="ry-label">Días de la semana</label>
+                <div class="d-flex flex-wrap gap-3">
+                    @foreach (var dia in Dias.LunesADomingo)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="Dias" value="@dia" id="dia-@dia" @(Model.Dias.Contains(dia) ? "checked" : "") />
+                            <label class="form-check-label" for="dia-@dia">@Dias.Nombres[(int)dia]</label>
+                        </div>
+                    }
+                </div>
+                <span asp-validation-for="Dias" class="text-danger small"></span>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <label asp-for="HoraSalida" class="ry-label"></label>
+                <input asp-for="HoraSalida" type="time" class="form-control ry-input" />
+                <span asp-validation-for="HoraSalida" class="text-danger small"></span>
+            </div>
+            <div class="col-6 col-md-3">
+                <label asp-for="HoraLlegada" class="ry-label"></label>
+                <input asp-for="HoraLlegada" type="time" class="form-control ry-input" />
+                <span asp-validation-for="HoraLlegada" class="text-danger small"></span>
+            </div>
+            <div class="col-4 col-md-2">
+                <label asp-for="MaxPaquetes" class="ry-label"></label>
+                <input asp-for="MaxPaquetes" class="form-control ry-input" />
+                <span asp-validation-for="MaxPaquetes" class="text-danger small"></span>
+            </div>
+            <div class="col-4 col-md-2">
+                <label asp-for="PesoMaxKg" class="ry-label"></label>
+                <input asp-for="PesoMaxKg" class="form-control ry-input" />
+                <span asp-validation-for="PesoMaxKg" class="text-danger small"></span>
+            </div>
+            <div class="col-4 col-md-2">
+                <label asp-for="DesvioMaxKm" class="ry-label"></label>
+                <input asp-for="DesvioMaxKm" class="form-control ry-input" />
+                <span asp-validation-for="DesvioMaxKm" class="text-danger small"></span>
+            </div>
+        </div>
+
+        @if (ViewBag.Ruta != null)
+        {
+            <div class="alert alert-info mt-4 mb-0">
+                Ruta: @ViewBag.Ruta.DistanciaKm km, unos @ViewBag.Ruta.DuracionMinutos minutos.
+            </div>
+        }
+        @if (ViewBag.RutaError != null)
+        {
+            <div class="alert alert-danger mt-4 mb-0">@ViewBag.RutaError</div>
+        }
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-ry-primary">Guardar viaje</button>
+            <button type="submit" asp-action="CalcularRuta" asp-route-id="@Model.Id" formnovalidate class="btn btn-ry-outline">Calcular ruta</button>
+            <a asp-action="Index" class="btn btn-ry-outline">Cancelar</a>
+        </div>
+    </form>
+</div>

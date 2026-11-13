@@ -43,6 +43,25 @@ public class CrearParadaDto
     public int Orden { get; set; }
 }
 
+public class CalcularRutaDto
+{
+    [Required(ErrorMessage = "El origen es obligatorio.")]
+    public string OrigenDir { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "El destino es obligatorio.")]
+    public string DestinoDir { get; set; } = string.Empty;
+
+    public List<string> Paradas { get; set; } = new();
+}
+
+public class RutaViajeDto
+{
+    public double DistanciaKm { get; set; }
+    public int DuracionMinutos { get; set; }
+
+    public List<GeocoderDto> Puntos { get; set; } = new();
+}
+
 public class ViajeDto
 {
     public int Id { get; set; }
@@ -61,6 +80,8 @@ public class ViajeDto
     public bool Activo { get; set; }
     public List<DayOfWeek> Dias { get; set; } = new();
     public List<ParadaDto> Paradas { get; set; } = new();
+
+    public List<PaqueteAsignadoDto> PaquetesAsignados { get; set; } = new();
 }
 
 public class ParadaDto
@@ -70,4 +91,16 @@ public class ParadaDto
     public string Direccion { get; set; } = string.Empty;
     public decimal Lat { get; set; }
     public decimal Lng { get; set; }
+}
+
+public class PaqueteAsignadoDto
+{
+    public int EnvioId { get; set; }
+    public string Descripcion { get; set; } = string.Empty;
+    public string OrigenDir { get; set; } = string.Empty;
+    public string DestinoDir { get; set; } = string.Empty;
+    public decimal PesoKg { get; set; }
+    public decimal Monto { get; set; }
+    public string Estado { get; set; } = string.Empty;
+    public DateTime FechaViaje { get; set; }
 }

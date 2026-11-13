@@ -35,6 +35,15 @@ public class ViajesRepositorio : IViajesRepositorio
             .FirstOrDefaultAsync(v => v.Id == id);
     }
 
+    public async Task<List<Envio>> GetEnviosAsignadosAsync(int viajeId)
+    {
+        return await _context.Envios
+            .Include(e => e.Asignacion)
+            .Where(e => e.Asignacion != null && e.Asignacion.ViajeId == viajeId)
+            .OrderBy(e => e.Asignacion!.FechaViaje)
+            .ToListAsync();
+    }
+
     public async Task CrearAsync(Viaje viaje)
     {
         _context.Viajes.Add(viaje);

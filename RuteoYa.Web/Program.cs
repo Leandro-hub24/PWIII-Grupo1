@@ -41,8 +41,7 @@ builder.Services.AddTransient<TokenDelegatingHandler>();
 
 builder.Services.AddHttpClient("MiApi", client =>
 {
-    // Reemplaza esto con el puerto y URL real donde corre tu Web API
-    client.BaseAddress = new Uri("https://localhost:7019/");
+    client.BaseAddress = new Uri(apiBaseUrl);
 })
     .AddHttpMessageHandler<TokenDelegatingHandler>();
 
