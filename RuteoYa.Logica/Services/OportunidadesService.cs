@@ -26,7 +26,7 @@ public class OportunidadesService : IOportunidadesService
         var viaje = await _oportunidadesRepositorio.GetViajePorIdAsync(viajeId);
         if (viaje == null) return new List<Envio>();
 
-        var envios = await _oportunidadesRepositorio.GetEnviosCompatiblesAsync(viaje.PesoMaxKg);
+        var enviosCandidatos = await _oportunidadesRepositorio.GetEnviosCompatiblesAsync(viaje.PesoMaxKg);
 
         return orden?.ToLower() switch
         {

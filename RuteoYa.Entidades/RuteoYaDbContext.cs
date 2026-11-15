@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 namespace RuteoYa.Entidades;
 
 public class RuteoYaDbContext : DbContext
@@ -28,13 +25,21 @@ public class RuteoYaDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-       
+
         modelBuilder.Entity<Envio>(entity =>
         {
             entity.HasOne(e => e.Usuario)
                   .WithMany(u => u.Envios)
                   .HasForeignKey(e => e.UsuarioId)
                   .OnDelete(DeleteBehavior.Restrict);
+
+            // Configurar precisión para que coincida con migraciones
+            entity.Property(e => e.OrigenLat).HasPrecision(18, 2);
+            entity.Property(e => e.OrigenLng).HasPrecision(18, 2);
+            entity.Property(e => e.DestinoLat).HasPrecision(18, 2);
+            entity.Property(e => e.DestinoLng).HasPrecision(18, 2);
+            entity.Property(e => e.PesoKg).HasPrecision(18, 2);
+            entity.Property(e => e.Monto).HasPrecision(18, 2);
         });
 
         modelBuilder.Entity<Viaje>(entity =>
@@ -43,6 +48,28 @@ public class RuteoYaDbContext : DbContext
                   .WithMany(u => u.Viajes)
                   .HasForeignKey(e => e.UsuarioId)
                   .OnDelete(DeleteBehavior.Restrict);
+
+            // Configurar precisión para que coincida con migraciones
+            entity.Property(v => v.OrigenLat).HasPrecision(18, 2);
+            entity.Property(v => v.OrigenLng).HasPrecision(18, 2);
+            entity.Property(v => v.DestinoLat).HasPrecision(18, 2);
+            entity.Property(v => v.DestinoLng).HasPrecision(18, 2);
+            entity.Property(v => v.PesoMaxKg).HasPrecision(18, 2);
+            entity.Property(v => v.DesvioMaxKm).HasPrecision(18, 2);
+        });
+
+        modelBuilder.Entity<Parada>(entity =>
+        {
+            // Configurar precisión para que coincida con migraciones
+            entity.Property(p => p.Lat).HasPrecision(18, 2);
+            entity.Property(p => p.Lng).HasPrecision(18, 2);
+        });
+
+        modelBuilder.Entity<Asignacion>(entity =>
+        {
+            // Configurar precisión para que coincida con migraciones
+            entity.Property(a => a.DesvioKm).HasPrecision(18, 2);
+            entity.Property(a => a.Ganancia).HasPrecision(18, 2);
         });
 
         // Seed de datos - Usuario de prueba

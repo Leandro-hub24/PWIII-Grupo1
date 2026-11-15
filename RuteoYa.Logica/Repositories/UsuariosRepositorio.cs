@@ -3,9 +3,6 @@ using RuteoYa.Entidades;
 using RuteoYa.Entidades.DTOs;
 using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 
@@ -58,5 +55,5 @@ public class UsuariosRepositorio : IUsuariosRepositorio
         return await _context.SaveChangesAsync() > 0;
     }
 
-    
+
 }

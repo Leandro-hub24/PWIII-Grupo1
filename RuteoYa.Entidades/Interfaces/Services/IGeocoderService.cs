@@ -7,5 +7,5 @@ namespace RuteoYa.Entidades.Interfaces.Services;
 /// </summary>
 public interface IGeocoderService
 {
-    Task<GeocoderDto> GeocodeAsync(string direccion);
+    Task<GeocoderDto> ObtenerCoordenadasAsync(string direccion);
 }

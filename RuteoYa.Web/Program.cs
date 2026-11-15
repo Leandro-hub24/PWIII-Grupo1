@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
+using RuteoYa.Web;
 using RuteoYa.Web.Common;
 using RuteoYa.Web;
 using RuteoYa.Web.Logic;

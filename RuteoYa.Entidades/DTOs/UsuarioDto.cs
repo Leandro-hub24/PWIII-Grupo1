@@ -1,13 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace RuteoYa.Entidades.DTOs;
 
-/// <summary>
-/// DTO para transferir datos de usuario entre capas (sin password).
-/// </summary>
 public class UsuarioDto
 {
     public int Id { get; set; }
