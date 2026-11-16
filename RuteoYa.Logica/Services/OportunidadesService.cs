@@ -1,6 +1,6 @@
 ﻿using RuteoYa.Entidades.DTOs;
 using RuteoYa.Entidades.Entities;
-using RuteoYa.Entidades.Enums;
+using RuteoYa.Entidades.Common.Enums;
 using RuteoYa.Entidades.Interfaces.Repositories;
 using RuteoYa.Entidades.Interfaces.Services;
 
@@ -27,7 +27,7 @@ public class OportunidadesService : IOportunidadesService
         var viaje = await _oportunidadesRepositorio.GetViajePorIdAsync(viajeId);
         if (viaje == null) return new List<Envio>();
 
-        // Capacidad que le queda al viaje
+        
         var (paquetesAsignados, pesoAsignado) = await _oportunidadesRepositorio.GetCargaAsignadaAsync(viajeId);
         if (paquetesAsignados >= viaje.MaxPaquets) return new List<Envio>();
 
@@ -36,7 +36,7 @@ public class OportunidadesService : IOportunidadesService
 
         var candidatos = await _oportunidadesRepositorio.GetEnviosCompatiblesAsync(pesoDisponible);
 
-        // Ruta habitual: se calcula una sola vez
+        
         var rutaHabitual = await CalcularRutaHabitualAsync(viaje);
         decimal distanciaHabitual = (decimal)rutaHabitual.DistanciaKm;
 
@@ -44,7 +44,7 @@ public class OportunidadesService : IOportunidadesService
 
         foreach (var envio in candidatos)
         {
-            // No se puede aceptar un envío propio
+            
             if (envio.UsuarioId == viaje.UsuarioId) continue;
 
             var (distanciaConEnvio, _) = await CalcularRutaConEnvioAsync(viaje, envio);
@@ -114,7 +114,7 @@ public class OportunidadesService : IOportunidadesService
         if (envio == null)
             return new ResultadoOperacion(false, "El envío no existe.");
 
-        if (envio.Estado != (byte)EstadoEnvio.Pendiente)
+        if (envio.Estado != (byte)EstadoEnvio.BuscandoConductor)
             return new ResultadoOperacion(false, "El envío ya no está disponible.");
 
         if (envio.UsuarioId == viaje.UsuarioId)
@@ -135,8 +135,8 @@ public class OportunidadesService : IOportunidadesService
         if (desvio > viaje.DesvioMaxKm)
             return new ResultadoOperacion(false, "El desvío de este envío supera el máximo permitido para tu viaje.");
 
-        // Llamada al repositorio pasando el ID, el viaje y el estado en formato byte
-        var asignado = await _oportunidadesRepositorio.AsignarEnvioAsync(envio.Id, viajeId, (byte)EstadoEnvio.Asignado);
+        
+        var asignado = await _oportunidadesRepositorio.AsignarEnvioAsync(envio.Id, viajeId, (byte)EstadoEnvio.ConductorAsignado);
 
         return asignado
             ? new ResultadoOperacion(true, "Envío aceptado exitosamente.")

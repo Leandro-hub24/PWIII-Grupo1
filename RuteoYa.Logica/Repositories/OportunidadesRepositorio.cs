@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
 using RuteoYa.Entidades.Entities;
-using RuteoYa.Entidades.Enums;
+using RuteoYa.Entidades.Common.Enums;
 using RuteoYa.Entidades.Interfaces.Repositories;
 namespace RuteoYa.Logica.Repositories;
 
@@ -33,7 +33,7 @@ public class OportunidadesRepositorio : IOportunidadesRepositorio
     {
         var pesos = await _context.Envios
             .AsNoTracking()
-            .Where(e => e.Estado == (byte)EstadoEnvio.Asignado &&
+            .Where(e => e.Estado == (byte)EstadoEnvio.ConductorAsignado &&
                         _context.Set<Asignacion>().Any(a => a.Id == e.AsignacionId && a.ViajeId == viajeId))
             .Select(e => e.PesoKg)
             .ToListAsync();
@@ -45,9 +45,9 @@ public class OportunidadesRepositorio : IOportunidadesRepositorio
     {
         await using var transaccion = await _context.Database.BeginTransactionAsync();
 
-        // 1. Opcional: Si necesitas registrar la asignación en una tabla intermedia
+        
         var envio = await _context.Envios.FindAsync(envioId);
-        if (envio == null || envio.Estado != (byte)EstadoEnvio.Pendiente)
+        if (envio == null || envio.Estado != (byte)EstadoEnvio.BuscandoConductor)
         {
             await transaccion.RollbackAsync();
             return false;
@@ -63,9 +63,9 @@ public class OportunidadesRepositorio : IOportunidadesRepositorio
         _context.Set<Asignacion>().Add(asignacion);
         await _context.SaveChangesAsync();
 
-        // 2. UPDATE atómico del estado del envío y su vínculo de asignación
+        
         var filas = await _context.Envios
-            .Where(e => e.Id == envioId && e.Estado == (byte)EstadoEnvio.Pendiente)
+            .Where(e => e.Id == envioId && e.Estado == (byte)EstadoEnvio.BuscandoConductor)
             .ExecuteUpdateAsync(s => s
                 .SetProperty(e => e.Estado, nuevoEstado)
                 .SetProperty(e => e.AsignacionId, asignacion.Id));
@@ -76,11 +76,11 @@ public class OportunidadesRepositorio : IOportunidadesRepositorio
             return false;
         }
 
-        // 3. Registrar en el historial de estados
+        
         _context.Set<EnvioEstadoHistorial>().Add(new EnvioEstadoHistorial
         {
             EnvioId = envioId,
-            EstadoAnterior = (byte)EstadoEnvio.Pendiente,
+            EstadoAnterior = (byte)EstadoEnvio.BuscandoConductor,
             EstadoNuevo = nuevoEstado,
             Fecha = DateTime.Now
         });
