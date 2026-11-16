@@ -58,4 +58,20 @@ public class EnviosRepositorio : IEnviosRepositorio
         envio.Estado = (byte)nuevo;
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<Envio>> GetTransportesDeConductorAsync(int conductorId, EstadoEnvio? estado)
+    {
+        var query = _context.Envios
+            .Include(e => e.Asignacion)
+                .ThenInclude(a => a!.Viaje)
+            .Where(e => e.Asignacion != null && e.Asignacion.Viaje!.UsuarioId == conductorId);
+
+        if (estado.HasValue)
+        {
+            var estadoByte = (byte)estado.Value;
+            query = query.Where(e => e.Estado == estadoByte);
+        }
+
+        return await query.OrderByDescending(e => e.Asignacion!.AsignadoEn).ToListAsync();
+    }
 }

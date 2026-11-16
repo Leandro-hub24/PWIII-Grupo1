@@ -47,6 +47,7 @@ builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<ISesionService, SesionService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<ITransportesService, TransportesService>();
 builder.Services.AddScoped<IEnviosRepositorio, RuteoYa.Logica.Repositories.EnviosRepositorio>();
 builder.Services.AddScoped<IEnviosService, EnviosService>();
 builder.Services.AddScoped<IViajesRepositorio, RuteoYa.Logica.Repositories.ViajesRepositorio>();
