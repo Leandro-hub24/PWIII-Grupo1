@@ -50,11 +50,11 @@ builder.Services.AddHttpClient("MiApi", client =>
 var app = builder.Build();
 
 // Migración automática al iniciar (solo para dev)
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<RuteoYaDbContext>();
-    db.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<RuteoYaDbContext>();
+//    db.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
