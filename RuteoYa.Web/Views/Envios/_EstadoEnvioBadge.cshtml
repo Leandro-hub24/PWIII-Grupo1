@@ -1,0 +1,13 @@
+@using RuteoYa.Entidades.Common.Enums
+@using RuteoYa.Entidades.Common.Helpers
+@model EstadoEnvio
+@{
+    var clase = Model switch
+    {
+        EstadoEnvio.Entregado => "ry-badge-success",
+        EstadoEnvio.Cancelado => "ry-badge-danger",
+        EstadoEnvio.BuscandoConductor => "ry-badge-warning",
+        _ => ""
+    };
+}
+<span class="ry-badge @clase">@EstadoEnvioReglas.Nombre(Model)</span>

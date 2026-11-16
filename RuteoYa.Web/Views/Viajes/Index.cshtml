@@ -1,0 +1,88 @@
+@using RuteoYa.Web.Models
+@model List<RuteoYa.Entidades.DTOs.ViajeDto>
+@{
+    ViewData["Title"] = "Mis viajes";
+    string filtro = ViewBag.Filtro;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="font-space fw-bold mb-0">Mis viajes</h2>
+        <p class="text-muted mb-0">Recorridos que hacés habitualmente.</p>
+    </div>
+    <a asp-action="Crear" class="btn btn-ry-primary">+ Nuevo viaje</a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="d-flex gap-2 mb-4">
+    <a asp-action="Index" asp-route-filtro="activos" class="btn btn-sm @(filtro == "activos" ? "btn-dark" : "btn-outline-secondary")">Activos</a>
+    <a asp-action="Index" asp-route-filtro="inactivos" class="btn btn-sm @(filtro == "inactivos" ? "btn-dark" : "btn-outline-secondary")">Inactivos</a>
+    <a asp-action="Index" asp-route-filtro="todos" class="btn btn-sm @(filtro == "todos" ? "btn-dark" : "btn-outline-secondary")">Todos</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">No hay viajes para mostrar.</div>
+}
+else
+{
+    <div class="table-responsive ry-card p-2">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Recorrido</th>
+                    <th>Días</th>
+                    <th>Horario</th>
+                    <th>Distancia</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var viaje in Model)
+                {
+                    <tr>
+                        <td>@viaje.OrigenDir → @viaje.DestinoDir</td>
+                        <td>@Dias.Texto(viaje.Dias)</td>
+                        <td>@viaje.HoraSalida.ToString("HH:mm") a @viaje.HoraLlegada.ToString("HH:mm")</td>
+                        <td>@viaje.DistanciaKm km</td>
+                        <td>
+                            @if (viaje.Activo)
+                            {
+                                <span class="ry-badge ry-badge-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="ry-badge ry-badge-danger">Inactivo</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Detalle" asp-route-id="@viaje.Id" class="btn btn-sm btn-ry-outline">Ver detalle</a>
+                            @if (viaje.Activo)
+                            {
+                                <a asp-controller="Oportunidades" asp-action="Index" asp-route-viajeId="@viaje.Id" class="btn btn-sm btn-ry-outline">Oportunidades</a>
+                                <form asp-action="Desactivar" asp-route-id="@viaje.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Desactivar</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="Activar" asp-route-id="@viaje.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Activar</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

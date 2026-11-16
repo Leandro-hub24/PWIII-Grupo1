@@ -63,7 +63,7 @@ namespace RuteoYa.Entidades.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AsignacionId")
+                    b.Property<int?>("AsignacionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreadoEn")
@@ -82,9 +82,6 @@ namespace RuteoYa.Entidades.Migrations
 
                     b.Property<decimal>("DestinoLng")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("EnvioEstadoHistorialId")
-                        .HasColumnType("int");
 
                     b.Property<byte>("Estado")
                         .HasColumnType("tinyint");
@@ -251,6 +248,10 @@ namespace RuteoYa.Entidades.Migrations
                     b.Property<int>("AsignacionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("DestinoDir")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("DestinoLat")
                         .HasColumnType("decimal(18,2)");
 
@@ -337,9 +338,7 @@ namespace RuteoYa.Entidades.Migrations
                 {
                     b.HasOne("RuteoYa.Entidades.Entities.Asignacion", "Asignacion")
                         .WithMany()
-                        .HasForeignKey("AsignacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AsignacionId");
 
                     b.HasOne("RuteoYa.Entidades.Entities.Usuario", "Usuario")
                         .WithMany("Envios")

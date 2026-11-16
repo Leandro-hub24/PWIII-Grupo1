@@ -19,9 +19,9 @@ public partial class Envio
     public byte Estado { get; set; }
     public DateTime CreadoEn { get; set; }
     public byte RowVersion { get; set; }
-    public int AsignacionId { get; set; }
-    public Asignacion Asignacion { get; set; }
-    public int EnvioEstadoHistorialId { get; set; }
+    // Nullable: un envío recién publicado todavía no tiene conductor asignado.
+    public int? AsignacionId { get; set; }
+    public Asignacion? Asignacion { get; set; }
     public List<EnvioEstadoHistorial> EnvioEstadoHistorial { get; set; } = new List<EnvioEstadoHistorial>();
 
 }

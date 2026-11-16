@@ -17,14 +17,10 @@ public static class DependencyInjection
             client.Timeout = TimeSpan.FromSeconds(30);
         });
 
-        services.AddHttpClient<IViajesApiService, ViajesApiService>(client =>
-        {
-            client.BaseAddress = new Uri(apiBaseUrl);
-            client.Timeout = TimeSpan.FromSeconds(30);
-        });
+        // Viajes usa el cliente "MiApi" (con el JWT del usuario), igual que Envíos.
+        services.AddScoped<IViajesApiService, ViajesApiService>();
 
         // Orquestadores de lógica de presentación
-        services.AddScoped<ViajesOrchestrator>();
         services.AddScoped<UsuariosOrchestrator>();
 
         return services;
