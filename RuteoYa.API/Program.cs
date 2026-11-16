@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RuteoYa.Entidades;
 using RuteoYa.Entidades.Interfaces.Repositories;
 using RuteoYa.Entidades.Interfaces.Services;
+using RuteoYa.Logica.Repositories;
 using RuteoYa.Logica.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -55,6 +56,9 @@ builder.Services.AddScoped<IViajesService, ViajesService>();
 
 builder.Services.AddHttpClient<IGeocoderService, GeocoderService>();
 builder.Services.AddHttpClient<IDistanciaService, DistanciaService>();
+
+builder.Services.AddScoped<IOportunidadesService, OportunidadesService>();
+builder.Services.AddScoped<IOportunidadesRepositorio, OportunidadesRepositorio>();
 
 builder.Services.AddOpenApi();
 

@@ -34,12 +34,14 @@ namespace RuteoYa.Entidades.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DesvioKm")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("FechaViaje")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Ganancia")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TiempoExtraMin")
@@ -78,9 +80,11 @@ namespace RuteoYa.Entidades.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DestinoLat")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("DestinoLng")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<byte>("Estado")
@@ -90,6 +94,7 @@ namespace RuteoYa.Entidades.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Monto")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("OrigenDir")
@@ -97,12 +102,15 @@ namespace RuteoYa.Entidades.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("OrigenLat")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("OrigenLng")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PesoKg")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<byte>("RowVersion")
@@ -163,9 +171,11 @@ namespace RuteoYa.Entidades.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Lat")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Lng")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Orden")
@@ -253,12 +263,15 @@ namespace RuteoYa.Entidades.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DestinoLat")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("DestinoLng")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("DesvioMaxKm")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("DistanciaMin")
@@ -278,15 +291,18 @@ namespace RuteoYa.Entidades.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("OrigenLat")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("OrigenLng")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ParadaId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("PesoMaxKg")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UsuarioId")

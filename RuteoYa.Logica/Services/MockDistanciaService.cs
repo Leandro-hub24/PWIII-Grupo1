@@ -37,4 +37,19 @@ public class MockDistanciaService : IDistanciaService
             DuracionMinutos = DuracionMockMinutos
         };
     }
+
+    public async Task<DistanciaRutaDto> CalcularPorCoordenadasAsync(double origenLat, double origenLng, double destinoLat, double destinoLng)
+    {
+        double diffLat = destinoLat - origenLat;
+        double diffLng = destinoLng - origenLng;
+        double distanciaEstimadaKm = Math.Sqrt(diffLat * diffLat + diffLng * diffLng) * 111.0;
+
+        if (distanciaEstimadaKm < 0.5) distanciaEstimadaKm = 3.5;
+
+        return await Task.FromResult(new DistanciaRutaDto
+        {
+            DistanciaKm = Math.Round(distanciaEstimadaKm, 2),
+            DuracionMinutos = (int)Math.Round(distanciaEstimadaKm * 2)
+        });
+    }
 }

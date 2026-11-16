@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RuteoYa.Entidades;
+using RuteoYa.Entidades.Entities;
+using RuteoYa.Entidades.Interfaces.Services;
 using RuteoYa.Entidades.DTOs;
 using RuteoYa.Web.Models;
 using RuteoYa.Web.Services;

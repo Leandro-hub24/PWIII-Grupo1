@@ -89,6 +89,39 @@ public class DistanciaService : IDistanciaService
         };
     }
 
+    public async Task<DistanciaRutaDto> CalcularPorCoordenadasAsync(double origenLat, double origenLng, double destinoLat, double destinoLng)
+    {
+        var origenCoords = $"{origenLat.ToString(System.Globalization.CultureInfo.InvariantCulture)},{origenLng.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+        var destinoCoords = $"{destinoLat.ToString(System.Globalization.CultureInfo.InvariantCulture)},{destinoLng.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+
+        var url = $"https://router.hereapi.com/v8/routes?transportMode=car&origin={origenCoords}&destination={destinoCoords}&return=summary&apiKey={_apiKey}";
+
+        var response = await _httpClient.GetAsync(url);
+        var jsonContent = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InvalidOperationException($"Error en HERE API: {jsonContent}");
+        }
+
+        var resultado = System.Text.Json.JsonSerializer.Deserialize<HereRoutingResponse>(
+            jsonContent,
+            new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        if (resultado?.Routes == null || resultado.Routes.Count == 0 || resultado.Routes[0].Sections == null || resultado.Routes[0].Sections.Count == 0)
+        {
+            throw new InvalidOperationException("No se encontró ninguna ruta entre los puntos especificados.");
+        }
+
+        var primeraSeccion = resultado.Routes[0].Sections[0];
+
+        return new DistanciaRutaDto
+        {
+            DistanciaKm = primeraSeccion.Summary.Length / 1000.0,
+            DuracionMinutos = (int)Math.Round(primeraSeccion.Summary.Duration / 60.0)
+        };
+    }
+
     private class HereRoutingResponse
     {
         [JsonPropertyName("routes")]

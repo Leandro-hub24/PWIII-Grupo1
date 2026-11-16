@@ -1,4 +1,4 @@
-namespace RuteoYa.Entidades.Common.Enums;
+﻿namespace RuteoYa.Entidades.Common.Enums;
 
 /// <summary>
 /// Estados de un envío (se guardan como byte en Envio.Estado).
