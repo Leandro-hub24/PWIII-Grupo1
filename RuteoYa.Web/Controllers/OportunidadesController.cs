@@ -42,6 +42,6 @@ public class OportunidadesController : Controller
         }
 
         TempData["Exito"] = resultado.Message;
-        return RedirectToAction("Index", "MisTransportes");
+        return RedirectToAction("Index", "Transportes");
     }
 }

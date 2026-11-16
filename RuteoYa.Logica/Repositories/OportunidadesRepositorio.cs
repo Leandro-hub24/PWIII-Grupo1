@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
-using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Common.Enums;
+using RuteoYa.Entidades.DTOs;
+using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Repositories;
 namespace RuteoYa.Logica.Repositories;
 
@@ -16,7 +17,11 @@ public class OportunidadesRepositorio : IOportunidadesRepositorio
 
     public Task<Viaje?> GetViajePorIdAsync(int id)
     {
-        return _context.Viajes.FirstOrDefaultAsync(v => v.Id == id && v.Activo);
+        //return _context.Viajes.FirstOrDefaultAsync(v => v.Id == id && v.Activo);
+        return _context.Viajes
+            .Include(v => v.ViajeDias)
+            .Include(v => v.Paradas.OrderBy(p => p.Orden))
+            .FirstOrDefaultAsync(v => v.Id == id && v.Activo);
     }
 
     public Task<List<Envio>> GetEnviosCompatiblesAsync(decimal pesoMaximo)
@@ -89,4 +94,104 @@ public class OportunidadesRepositorio : IOportunidadesRepositorio
         await transaccion.CommitAsync();
         return true;
     }
+
+
+    // Metodos Agregados
+
+    public async Task<(bool Exito, string? Mensaje)> AsignarEnviosViajesAsync(
+    int viajeId, List<AsignacionEnvioDetalleDto> envios, DateTime fechaViaje)
+    {
+        await using var transaccion = await _context.Database.BeginTransactionAsync();
+
+        try
+        {
+            const byte estadoBuscando = (byte)EstadoEnvio.BuscandoConductor;
+            const byte estadoAsignado = (byte)EstadoEnvio.ConductorAsignado;
+
+            foreach (var item in envios)
+            {
+                var asignacion = new Asignacion
+                {
+                    ViajeId = viajeId,
+                    FechaViaje = fechaViaje,
+                    DesvioKm = item.DesvioKm,
+                    TiempoExtraMin = item.TiempoExtraMin,
+                    Ganancia = item.Ganancia,
+                    AsignadoEn = DateTime.Now
+                };
+
+                _context.Set<Asignacion>().Add(asignacion);
+                await _context.SaveChangesAsync();
+
+                var filas = await _context.Envios
+                    .Where(e => e.Id == item.EnvioId && e.Estado == estadoBuscando)
+                    .ExecuteUpdateAsync(s => s
+                        .SetProperty(e => e.Estado, estadoAsignado)
+                        .SetProperty(e => e.AsignacionId, asignacion.Id));
+
+                if (filas == 0)
+                {
+                    await transaccion.RollbackAsync();
+                    return (false, $"El envío #{item.EnvioId} ya no está disponible.");
+                }
+
+                _context.Set<EnvioEstadoHistorial>().Add(new EnvioEstadoHistorial
+                {
+                    EnvioId = item.EnvioId,
+                    EstadoAnterior = estadoBuscando,
+                    EstadoNuevo = estadoAsignado,
+                    Fecha = DateTime.Now
+                });
+            }
+
+            await _context.SaveChangesAsync();
+            await transaccion.CommitAsync();
+            return (true, null);
+        }
+        catch
+        {
+            await transaccion.RollbackAsync();
+            throw;
+        }
+    }
+
+    public Task<List<Envio>> GetEnviosPorIdsAsync(List<int> ids)
+    {
+        return _context.Envios.Where(e => ids.Contains(e.Id)).ToListAsync();
+    }
+
+    public Task<List<Envio>> GetEnviosAsignadosAViajeAsync(int viajeId)
+    {
+        return _context.Envios
+            .Include(e => e.Asignacion)
+            .Where(e => e.Asignacion != null
+                     && e.Asignacion.ViajeId == viajeId
+                     && e.Estado >= (byte)EstadoEnvio.ConductorAsignado && e.Estado <= (byte)EstadoEnvio.EnCamino)
+            .ToListAsync();
+    }
+
+    public Task<List<Viaje>> GetViajesActivosDeUsuarioAsync(int usuarioId)
+    {
+        return _context.Viajes
+            .Include(v => v.ViajeDias)
+            .Include(v => v.Paradas.OrderBy(p => p.Orden))
+            .Where(v => v.UsuarioId == usuarioId && v.Activo)
+            .OrderByDescending(v => v.Id)
+            .ToListAsync();
+    }
+
+    public async Task<decimal> GetGananciaEfectivaMesAsync(int conductorId, int anio, int mes)
+    {
+        return await _context.Envios
+            .Where(e => e.Asignacion != null
+                     && e.Asignacion.Viaje != null
+                     && e.Asignacion.Viaje.UsuarioId == conductorId
+                     && e.Estado == (byte)EstadoEnvio.Entregado
+                     && e.Asignacion.FechaViaje.Year == anio
+                     && e.Asignacion.FechaViaje.Month == mes)
+            .SumAsync(e => e.Asignacion!.Ganancia);
+    }
+
+
+
 }
