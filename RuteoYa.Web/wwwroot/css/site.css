@@ -4,10 +4,12 @@
 :root {
     --bg: #0B1222;
     --cd: #121C33;
+    --cd2: #17233F; /* superficie un poco más clara (inputs, hover) */
     --ink: #EEF1F8;
-    --mu: #9AA4BB;
-    --ln: #25324F;
+    --mu: #A9B3CA; /* texto secundario (más claro que antes para que se lea) */
+    --ln: #2A3858;
     --pr: #FF9142;
+    --pr-h: #FFA561;
     --pt: #0E1830;
     --gn: #5FD3A0;
     --gb: #12372B;
@@ -15,6 +17,17 @@
     --at: #FFB37A;
     --rb: #3A1C1F;
     --rt: #FF9A9A;
+    --ib: #14284A;
+    --it: #8DB8FF;
+    /* Avisa al navegador que es un tema oscuro (calendario, scrollbars, etc.) */
+    color-scheme: dark;
+    /* Variables de Bootstrap 5.3 que usan text-muted, bordes, etc. */
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--ink);
+    --bs-secondary-color: var(--mu);
+    --bs-tertiary-color: var(--mu);
+    --bs-border-color: var(--ln);
+    --bs-heading-color: #ffffff;
 }
 
 html, body {
@@ -34,6 +47,60 @@ body {
 
 h1, h2, h3, h4, .font-space {
     font-family: 'Space Grotesk', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+}
+
+hr {
+    border-color: var(--ln);
+    opacity: 1;
+}
+
+::selection {
+    background-color: rgba(255, 145, 66, 0.35);
+    color: #ffffff;
+}
+
+/* Foco visible para navegar con teclado */
+:focus-visible {
+    outline: 2px solid var(--pr);
+    outline-offset: 2px;
+}
+
+/* Textos secundarios legibles sobre fondo oscuro */
+.text-muted,
+.text-body-secondary,
+small.text-muted {
+    color: var(--mu) !important;
+}
+
+.text-danger {
+    color: var(--rt) !important;
+}
+
+.text-success {
+    color: var(--gn) !important;
+}
+
+/* Links dentro del contenido (ej: "← Volver a mis envíos") */
+main a:not(.btn):not(.nav-link):not(.list-group-item) {
+    color: var(--at);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+    main a:not(.btn):not(.nav-link):not(.list-group-item):hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+/* Por si alguna vista usa fondos claros de Bootstrap */
+.bg-white,
+.bg-light {
+    background-color: var(--cd) !important;
+    color: var(--ink) !important;
 }
 
 /* =========================================================
@@ -140,6 +207,15 @@ h1, h2, h3, h4, .font-space {
     color: var(--mu);
 }
 
+/* Tarjetas, menús y modales de Bootstrap en tema oscuro */
+.card,
+.modal-content,
+.dropdown-menu {
+    background-color: var(--cd);
+    border: 1px solid var(--ln);
+    color: var(--ink);
+}
+
 /* Badges / Etiquetas de Estado */
 .ry-badge {
     display: inline-block;
@@ -147,8 +223,10 @@ h1, h2, h3, h4, .font-space {
     border-radius: 99px;
     font-size: 12px;
     font-weight: 600;
-    border: 1px solid var(--ln);
-    color: var(--mu);
+    background-color: #1B2745;
+    border: 1px solid #34456C;
+    color: #C7D2EC;
+    white-space: nowrap;
 }
 
 .ry-badge-success {
@@ -169,6 +247,25 @@ h1, h2, h3, h4, .font-space {
     border-color: transparent;
 }
 
+.ry-badge-info {
+    background-color: var(--ib);
+    color: var(--it);
+    border-color: transparent;
+}
+
+/* =========================================================
+   4. BOTONES
+   ========================================================= */
+.btn {
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+.btn-sm {
+    border-radius: 10px;
+}
+
 /* Botones con estilo RuteaYa */
 .btn-ry-primary {
     background-color: var(--pr) !important;
@@ -179,17 +276,257 @@ h1, h2, h3, h4, .font-space {
     padding: 10px 18px;
 }
 
+    .btn-ry-primary:hover,
+    .btn-ry-primary:focus {
+        background-color: var(--pr-h) !important;
+        color: var(--pt) !important;
+    }
+
+.btn-sm.btn-ry-primary,
+.btn-sm.btn-ry-outline {
+    padding: 6px 14px;
+}
+
 .btn-ry-outline {
     background-color: transparent !important;
     color: var(--ink) !important;
-    border: 1.5px solid var(--ln) !important;
+    border: 1.5px solid #4A5B84 !important;
     border-radius: 12px;
     font-weight: 600;
     padding: 10px 18px;
 }
 
+    .btn-ry-outline:hover,
+    .btn-ry-outline:focus {
+        background-color: #ffffff14 !important;
+        border-color: #8FA2CC !important;
+        color: #ffffff !important;
+    }
+
+/* Filtros por estado: el activo (btn-dark) se resalta en naranja */
+main .btn-dark {
+    --bs-btn-color: var(--at);
+    --bs-btn-bg: rgba(255, 145, 66, 0.15);
+    --bs-btn-border-color: var(--pr);
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-bg: rgba(255, 145, 66, 0.25);
+    --bs-btn-hover-border-color: var(--pr);
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: rgba(255, 145, 66, 0.25);
+    --bs-btn-active-border-color: var(--pr);
+}
+
+main .btn-outline-secondary {
+    --bs-btn-color: #CBD5E8;
+    --bs-btn-border-color: #3B4B70;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-bg: var(--cd2);
+    --bs-btn-hover-border-color: #5B6D96;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: var(--cd2);
+    --bs-btn-active-border-color: #5B6D96;
+}
+
+main .btn-outline-danger {
+    --bs-btn-color: var(--rt);
+    --bs-btn-border-color: #7A3A40;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-bg: #7A2B33;
+    --bs-btn-hover-border-color: #A04048;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: #7A2B33;
+    --bs-btn-active-border-color: #A04048;
+}
+
+main .btn-primary {
+    --bs-btn-color: var(--pt);
+    --bs-btn-bg: var(--pr);
+    --bs-btn-border-color: var(--pr);
+    --bs-btn-hover-color: var(--pt);
+    --bs-btn-hover-bg: var(--pr-h);
+    --bs-btn-hover-border-color: var(--pr-h);
+    --bs-btn-active-color: var(--pt);
+    --bs-btn-active-bg: var(--pr-h);
+    --bs-btn-active-border-color: var(--pr-h);
+}
+
+.btn:disabled,
+.btn.disabled {
+    opacity: 0.5;
+}
+
 /* =========================================================
-   4. PANTALLA DE AUTENTICACIÓN (LOGIN / REGISTRO)
+   5. TABLAS (Mis envíos, Mis transportes, Historial...)
+   ========================================================= */
+main .table {
+    --bs-table-bg: transparent;
+    --bs-table-color: #E2E8F0;
+    --bs-table-border-color: rgba(255, 255, 255, 0.10);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.03);
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+    --bs-table-hover-color: #ffffff;
+    color: #E2E8F0;
+    margin-bottom: 0;
+}
+
+    main .table > :not(caption) > * > * {
+        background-color: transparent;
+        color: inherit;
+        border-bottom-color: rgba(255, 255, 255, 0.10);
+        padding: 14px 12px;
+    }
+
+    main .table thead th {
+        color: var(--mu);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        border-bottom-width: 1px;
+    }
+
+    main .table tbody tr:hover > * {
+        background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    main .table tbody tr:last-child > * {
+        border-bottom: none;
+    }
+
+/* =========================================================
+   6. FORMULARIOS (Nuevo envío, Nuevo viaje, etc.)
+   ========================================================= */
+.form-label {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.form-text {
+    color: var(--mu);
+}
+
+main .form-control,
+main .form-select {
+    background-color: var(--cd2);
+    border: 1.5px solid var(--ln);
+    color: var(--ink);
+    border-radius: 12px;
+    padding: 10px 14px;
+}
+
+    main .form-control:focus,
+    main .form-select:focus {
+        background-color: var(--cd2);
+        color: var(--ink);
+        border-color: var(--pr);
+        box-shadow: 0 0 0 3px rgba(255, 145, 66, 0.25);
+    }
+
+    main .form-control::placeholder {
+        color: #7E89A3;
+        opacity: 1;
+    }
+
+    main .form-control:disabled,
+    main .form-control[readonly],
+    main .form-select:disabled {
+        background-color: #101A30;
+        color: var(--mu);
+        opacity: 1;
+    }
+
+/* Flecha del select en color claro (la de Bootstrap es oscura) */
+main .form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23EEF1F8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+    main .form-select option {
+        background-color: var(--cd);
+        color: var(--ink);
+    }
+
+.form-check-input {
+    background-color: var(--cd2);
+    border-color: #51608A;
+}
+
+    .form-check-input:checked {
+        background-color: var(--pr);
+        border-color: var(--pr);
+    }
+
+.input-group-text {
+    background-color: var(--cd2);
+    border: 1.5px solid var(--ln);
+    color: var(--mu);
+}
+
+/* Mensajes de validación (ASP.NET + Bootstrap) */
+.field-validation-error,
+.invalid-feedback {
+    color: var(--rt) !important;
+    font-size: 0.85rem;
+}
+
+.input-validation-error,
+main .form-control.is-invalid {
+    border-color: var(--rt) !important;
+}
+
+.validation-summary-errors {
+    background-color: var(--rb);
+    border: 1px solid #7A3A40;
+    color: var(--rt);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+}
+
+    .validation-summary-errors ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+/* =========================================================
+   7. ALERTAS (mensajes de éxito, error, info)
+   ========================================================= */
+.alert {
+    border-radius: 12px;
+    border-width: 1px;
+}
+
+.alert-success {
+    background-color: var(--gb);
+    border-color: #1E5A44;
+    color: var(--gn);
+}
+
+.alert-danger {
+    background-color: var(--rb);
+    border-color: #7A3A40;
+    color: var(--rt);
+}
+
+.alert-warning {
+    background-color: var(--ab);
+    border-color: #6B4A2B;
+    color: var(--at);
+}
+
+.alert-info {
+    background-color: var(--ib);
+    border-color: #25406B;
+    color: var(--it);
+}
+
+.alert .alert-link {
+    color: inherit;
+    text-decoration: underline;
+}
+
+/* =========================================================
+   8. PANTALLA DE AUTENTICACIÓN (LOGIN / REGISTRO)
    ========================================================= */
 .ry-auth-left {
     background-color: #0E1830;
@@ -241,3 +578,39 @@ h1, h2, h3, h4, .font-space {
     .ry-input::placeholder {
         color: var(--mu) !important;
     }
+
+/* =========================================================
+   9. DETALLES FINOS (scroll y pantallas chicas)
+   ========================================================= */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2F3F66;
+    border-radius: 8px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #44578A;
+    }
+
+@media (max-width: 576px) {
+    .ry-card {
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    main h2 {
+        font-size: 1.5rem;
+    }
+
+    .ry-auth-left {
+        padding: 32px;
+    }
+}
