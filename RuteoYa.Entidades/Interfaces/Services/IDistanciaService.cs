@@ -12,4 +12,5 @@ public interface IDistanciaService
     /// la distancia y duración de la ruta óptima en auto.
     /// </summary>
     Task<DistanciaRutaDto> CalcularAsync(string origenDireccion, string destinoDireccion);
+    Task<DistanciaRutaDto> CalcularPorCoordenadasAsync(double origenLat, double origenLng, double destinoLat, double destinoLng);
 }

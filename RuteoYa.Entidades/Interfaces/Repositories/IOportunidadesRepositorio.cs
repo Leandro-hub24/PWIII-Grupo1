@@ -7,6 +7,7 @@ namespace RuteoYa.Entidades.Interfaces.Repositories
         Task<Viaje?> GetViajePorIdAsync(int id);
         Task<List<Envio>> GetEnviosCompatiblesAsync(decimal pesoMaximo);
         Task<Envio?> GetEnvioPorIdAsync(int id);
-        Task<bool> ActualizarEstadoEnvioAsync(int envioId, byte nuevoEstado);
+        Task<(int Paquetes, decimal PesoKg)> GetCargaAsignadaAsync(int viajeId);
+        Task<bool> AsignarEnvioAsync(int envioId, int viajeId, byte nuevoEstado);
     }
 }

@@ -37,12 +37,22 @@ public class OportunidadesController : ControllerBase
     [HttpPost("aceptar")]
     public async Task<ActionResult> AceptarOportunidad([FromBody] AceptarOportunidadDto dto)
     {
-        var exito = await _oportunidadesService.AceptarOportunidadAsync(dto.EnvioId, dto.ViajeId);
-        if (!exito)
+        try
         {
-            return BadRequest(new { Message = "No se pudo aceptar el envío, es posible que ya no esté disponible." });
+            var resultado = await _oportunidadesService.AceptarOportunidadAsync(dto.EnvioId, dto.ViajeId);
+
+            // CORRECCIÓN: Evaluar la propiedad .Exito
+            if (!resultado.Exito)
+            {
+                return BadRequest(new { Message = resultado.Mensaje });
+            }
+
+            return Ok(new { Message = resultado.Mensaje });
         }
-        return Ok(new { Message = "Envío aceptado exitosamente" });
+        catch (InvalidOperationException ex)
+        {
+            return StatusCode(StatusCodes.Status502BadGateway, new { Message = ex.Message });
+        }
     }
 
 } 

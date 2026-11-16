@@ -9,5 +9,5 @@ public interface IOportunidadesService
     Task<List<Envio>> ObtenerEnviosCompatiblesAsync(int viajeId, string? orden);
     Task<Envio?> ObtenerEnvioPorIdAsync(int envioId);
     Task<DetalleOportunidadDto?> CalcularDetalleOportunidadAsync(int viajeId, int envioId);
-    Task<bool> AceptarOportunidadAsync(int envioId, int viajeId);
+    Task<ResultadoOperacion> AceptarOportunidadAsync(int envioId, int viajeId);
 }
