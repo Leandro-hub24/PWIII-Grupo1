@@ -1,0 +1,87 @@
+﻿@using RuteoYa.Entidades.Common.Enums
+@using RuteoYa.Entidades.Common.Helpers
+@model List<RuteoYa.Entidades.DTOs.TransporteDto>
+@{
+    ViewData["Title"] = "Mis transportes";
+    var estadoActual = ViewBag.EstadoActual as EstadoEnvio?;
+    // Estados que puede tener un paquete que ya fue aceptado por un conductor.
+    var estadosFiltro = new[] { EstadoEnvio.ConductorAsignado, EstadoEnvio.Retirado, EstadoEnvio.EnCamino, EstadoEnvio.Entregado };
+}
+
+<div class="mb-3">
+    <h2 class="font-space fw-bold mb-0">Mis transportes</h2>
+    <p class="text-muted mb-0">Paquetes que aceptaste llevar.</p>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<!-- Filtro por estado -->
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a asp-action="Index" class="btn btn-sm @(estadoActual == null ? "btn-dark" : "btn-outline-secondary")">Todos</a>
+    @foreach (var e in estadosFiltro)
+    {
+        <a asp-action="Index" asp-route-estado="@((byte)e)"
+           class="btn btn-sm @(estadoActual == e ? "btn-dark" : "btn-outline-secondary")">@EstadoEnvioReglas.Nombre(e)</a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No tenés transportes@(estadoActual != null ? " en este estado" : "").</div>
+}
+else
+{
+    <div class="table-responsive ry-card p-2">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Paquete</th>
+                    <th>Recorrido del paquete</th>
+                    <th>Viaje</th>
+                    <th>Ganancia</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>@t.Descripcion</td>
+                        <td>@t.OrigenDir → @t.DestinoDir</td>
+                        <td>
+                            @t.ViajeOrigen → @t.ViajeDestino
+                            <div class="small text-muted">@t.FechaViaje.ToString("dd/MM/yyyy")</div>
+                        </td>
+                        <td>$@t.Ganancia.ToString("N0")</td>
+                        <td><partial name="~/Views/Envios/_EstadoEnvioBadge.cshtml" model="t.Estado" /></td>
+                        <td class="text-end">
+                            @if (t.EstadoSiguiente is EstadoEnvio siguiente)
+                            {
+                                var texto = siguiente switch
+                                {
+                                    EstadoEnvio.Retirado => "Marcar retirado",
+                                    EstadoEnvio.EnCamino => "Marcar en camino",
+                                    _ => "Marcar entregado"
+                                };
+                                <form asp-action="CambiarEstado" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@t.EnvioId" />
+                                    <input type="hidden" name="nuevo" value="@((byte)siguiente)" />
+                                    <input type="hidden" name="estadoFiltro" value="@(estadoActual.HasValue ? ((byte)estadoActual.Value).ToString() : "")" />
+                                    <button type="submit" class="btn btn-sm btn-ry-primary">@texto</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

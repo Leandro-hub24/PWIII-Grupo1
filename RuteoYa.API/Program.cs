@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RuteoYa.Entidades;
 using RuteoYa.Entidades.Interfaces.Repositories;
 using RuteoYa.Entidades.Interfaces.Services;
+using RuteoYa.Logica.Repositories;
 using RuteoYa.Logica.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -13,7 +14,9 @@ builder.Services.AddSwaggerGen();
 // Add services to the container.
 
 builder.Services.AddDbContext<RuteoYaDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CadenaConexion")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 builder.Services.AddControllers()
 .AddJsonOptions(options =>
@@ -45,7 +48,18 @@ builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<ISesionService, SesionService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<ITransportesService, TransportesService>();
+builder.Services.AddScoped<IEnviosRepositorio, RuteoYa.Logica.Repositories.EnviosRepositorio>();
+builder.Services.AddScoped<IEnviosService, EnviosService>();
+builder.Services.AddScoped<IViajesRepositorio, RuteoYa.Logica.Repositories.ViajesRepositorio>();
+builder.Services.AddScoped<IViajesService, ViajesService>();
+builder.Services.AddScoped<IOptimizadorService, OptimizadorService>();
 
+builder.Services.AddHttpClient<IGeocoderService, GeocoderService>();
+builder.Services.AddHttpClient<IDistanciaService, DistanciaService>();
+
+builder.Services.AddScoped<IOportunidadesService, OportunidadesService>();
+builder.Services.AddScoped<IOportunidadesRepositorio, OportunidadesRepositorio>();
 
 builder.Services.AddOpenApi();
 

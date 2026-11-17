@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RuteoYa.Entidades.Entities;
+﻿namespace RuteoYa.Entidades.Entities;
 
 public partial class Viaje
 {
@@ -12,6 +8,7 @@ public partial class Viaje
     public string OrigenDir { get; set; }
     public decimal OrigenLat { get; set; }
     public decimal OrigenLng { get; set; }
+    public string DestinoDir { get; set; }
     public decimal DestinoLat { get; set; }
     public decimal DestinoLng { get; set; }
     public TimeOnly HoraSalida { get; set; }

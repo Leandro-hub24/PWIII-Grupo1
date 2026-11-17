@@ -1,4 +1,5 @@
-﻿@{
+﻿@using RuteoYa.Entidades.DTOs
+@{
     ViewData["Title"] = "Inicio";
 }
 
@@ -19,19 +20,19 @@
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="ry-card">
             <p class="ry-label m-0">Próximos viajes</p>
-            <div class="ry-stat-number">2</div>
+            <div class="ry-stat-number">@ViewData["CantidadViajes"]</div>
         </div>
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="ry-card">
             <p class="ry-label m-0">Envíos pendientes</p>
-            <div class="ry-stat-number">2</div>
+            <div class="ry-stat-number">@ViewData["CantidadEnviosPendientes"]</div>
         </div>
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="ry-card">
             <p class="ry-label m-0">Oportunidades</p>
-            <div class="ry-stat-number">5</div>
+            <div class="ry-stat-number">@ViewData["CantidadOportunidades"]</div>
         </div>
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
@@ -42,55 +43,90 @@
     </div>
 </div>
 
+
 <!-- Listados principales responsivos -->
 <div class="row g-3">
     <!-- Próximos viajes -->
     <div class="col-12 col-lg-7">
         <div class="ry-card h-100">
             <h2 class="fs-5 fw-bold mb-3 font-space">Próximos viajes</h2>
-            
-            <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
-                <div>
-                    <strong class="d-block">Belgrano → Lomas de Zamora</strong>
-                    <span class="ry-label">Lun, Mié, Vie · 08:00 – 08:55</span>
-                </div>
-                <span class="ry-badge ry-badge-success">Activo</span>
-            </div>
 
-            <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
-                <div>
-                    <strong class="d-block">Palermo → San Isidro</strong>
-                    <span class="ry-label">Vie · 18:30 – 19:20</span>
-                </div>
-                <span class="ry-badge ry-badge-success">Activo</span>
-            </div>
+            @{
+                var viajesActivos = ViewData["ViajesActivos"] as List<RuteoYa.Entidades.DTOs.ViajeDto>
+                                   ?? new List<RuteoYa.Entidades.DTOs.ViajeDto>();
+            }
+
+            @if (viajesActivos.Any())
+            {
+                @foreach (var viaje in viajesActivos)
+                {
+                    <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
+                        <div>
+                            <strong class="d-block">
+                                @viaje.OrigenDir → @viaje.DestinoDir
+                            </strong>
+                            <span class="ry-label">
+                                @string.Join(", ", viaje.Dias) ·
+                                @viaje.HoraSalida.ToString("HH:mm") –
+                                @viaje.HoraLlegada.ToString("HH:mm")
+                            </span>
+                        </div>
+                        <span class="ry-badge ry-badge-success">Activo</span>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-secondary">No tenés viajes activos.</p>
+            }
         </div>
     </div>
 
+
+    
     <!-- Envíos pendientes -->
     <div class="col-12 col-lg-5">
         <div class="ry-card h-100 d-flex flex-column">
             <h2 class="fs-5 fw-bold mb-3 font-space">Envíos pendientes</h2>
 
-            <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
-                <div>
-                    <strong class="d-block">Plaza Italia → Obelisco</strong>
-                    <span class="ry-label">Zapatillas · $4.000</span>
-                </div>
-                <span class="ry-badge ry-badge-warning">Buscando conductor</span>
-            </div>
+            @{
+                var enviosPendientes = ViewData["EnviosPendientes"]
+                    as List<RuteoYa.Entidades.DTOs.EnvioDto>
+                    ?? new List<RuteoYa.Entidades.DTOs.EnvioDto>();
+            }
 
-            <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
-                <div>
-                    <strong class="d-block">Recoleta → Quilmes</strong>
-                    <span class="ry-label">Documentos · $3.500</span>
-                </div>
-                <span class="ry-badge">Conductor asignado</span>
-            </div>
+            @if (enviosPendientes.Any())
+            {
+                @foreach (var envio in enviosPendientes)
+                {
+                    <div class="d-flex justify-content-between align-items-center py-3 border-top border-secondary border-opacity-25 flex-wrap gap-2">
+                        <div>
+                            <strong class="d-block">
+                                @envio.OrigenDir → @envio.DestinoDir
+                            </strong>
+                            <span class="ry-label">
+                                @envio.Descripcion · @envio.Monto.ToString("C0")
+                            </span>
+                        </div>
+                        <span class="ry-badge ry-badge-warning">
+                            @envio.EstadoNombre
+                        </span>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-secondary">No tenés envíos pendientes.</p>
+            }
 
             <div class="mt-auto pt-3">
-                <a class="btn btn-ry-outline w-100" asp-controller="Oportunidades" asp-action="Index">Ver oportunidades</a>
+                <a class="btn btn-ry-outline w-100"
+                   asp-controller="Oportunidades"
+                   asp-action="Index">
+                    Ver oportunidades
+                </a>
             </div>
         </div>
     </div>
+
 </div>

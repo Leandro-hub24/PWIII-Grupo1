@@ -1,14 +1,40 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using RuteoYa.Entidades;
+using RuteoYa.Web;
 using RuteoYa.Web.Common;
+using RuteoYa.Web.Logic;
 using RuteoYa.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<RuteoYaDbContext>();
+
+// Servicios propios de Web (orquestadores, servicios HTTP que consumen API)
+var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7001";
+builder.Services.AddWebServices(apiBaseUrl);
+
+//builder.Services.AddScoped<IOportunidadesApiService, OportunidadesApiService>();
+builder.Services.AddHttpClient<IOportunidadesApiService, OportunidadesApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+})
+.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+})
+.AddHttpMessageHandler<TokenDelegatingHandler>();
+
+builder.Services.AddScoped<IOptimizacionApiService, OptimizacionApiService>();
+
+builder.Services.AddScoped<OportunidadesOrchestrator>();
 // Add services to the container.
+
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITransportesApiService, TransportesApiService>();
+builder.Services.AddScoped<IEnviosApiService, EnviosApiService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -31,14 +57,20 @@ builder.Services.AddTransient<TokenDelegatingHandler>();
 
 builder.Services.AddHttpClient("MiApi", client =>
 {
-    // Reemplaza esto con el puerto y URL real donde corre tu Web API
-    client.BaseAddress = new Uri("https://localhost:7019/");
+    client.BaseAddress = new Uri(apiBaseUrl);
 })
     .AddHttpMessageHandler<TokenDelegatingHandler>();
 
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Migración automática al iniciar (solo para dev)
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<RuteoYaDbContext>();
+//    db.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

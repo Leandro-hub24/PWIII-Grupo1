@@ -1,0 +1,150 @@
+﻿@model RuteoYa.Web.Models.OptimizadorViewModel
+@{
+    ViewData["Title"] = "Optimizador de oportunidades";
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Optimizador de oportunidades</h2>
+        <p class="text-muted mb-0">Evaluamos todas las combinaciones y elegimos la de mayor ganancia.</p>
+    </div>
+    @if (Model.ViajesActivos.Any())
+    {
+        <a class="btn btn-ry-outline" asp-action="Index" asp-route-viajeId="@Model.ViajeId">Calcular de nuevo</a>
+    }
+</div>
+
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success mb-3">@TempData["Exito"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mb-3">@TempData["Error"]</div>
+}
+
+@if (!Model.ViajesActivos.Any())
+{
+    <div class="ry-card">
+        <p class="text-muted mb-0">No tenés viajes activos todavía. Creá un viaje para poder optimizar envíos.</p>
+    </div>
+}
+else
+{
+    <!-- Selector de viaje -->
+    <div class="ry-card mb-3" style="padding: 16px 20px;">
+        <form method="get" asp-action="Index" class="d-flex align-items-center flex-wrap gap-3 m-0">
+            <label for="viajeSelector" class="form-label mb-0 text-nowrap">Viaje a optimizar:</label>
+            <select id="viajeSelector" name="viajeId" onchange="this.form.submit()" class="form-select" style="max-width: 420px;">
+                @foreach (var v in Model.ViajesActivos)
+                {
+                    <option value="@v.Id" selected="@(v.Id == Model.ViajeId)">
+                        #@v.Id · @v.Descripcion
+                    </option>
+                }
+            </select>
+        </form>
+    </div>
+
+    <!-- Barra de límites del viaje -->
+    <div class="ry-card mb-4">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3">
+                <span class="ry-label d-block">Viaje</span>
+                <strong class="text-white">@Model.Restricciones.Origen → @Model.Restricciones.Destino</strong>
+            </div>
+
+            <div class="col-md-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="ry-label">Paquetes</span>
+                    <small class="fw-bold">@(Model.Recomendada?.CantidadPaquetes ?? 0) de @Model.Restricciones.MaxPaquetes</small>
+                </div>
+                <div class="progress" style="height: 8px; background-color: var(--ln); border-radius: 9px;">
+                    <div class="progress-bar" style="width: @Model.PorcentajePaquetes%; background-color: var(--pr); border-radius: 9px;"></div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="ry-label">Peso (kg)</span>
+                    <small class="fw-bold">@(Model.Recomendada?.PesoTotalKg ?? 0) de @Model.Restricciones.PesoMaxKg</small>
+                </div>
+                <div class="progress" style="height: 8px; background-color: var(--ln); border-radius: 9px;">
+                    <div class="progress-bar" style="width: @Model.PorcentajePeso%; background-color: var(--pr); border-radius: 9px;"></div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="ry-label">Desvío (km)</span>
+                    <small class="fw-bold">@(Model.Recomendada?.DesvioTotalKm ?? 0) de @Model.Restricciones.DesvioMaxKm</small>
+                </div>
+                <div class="progress" style="height: 8px; background-color: var(--ln); border-radius: 9px;">
+                    <div class="progress-bar" style="width: @Model.PorcentajeDesvio%; background-color: var(--pr); border-radius: 9px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.TieneSolucion)
+    {
+        <div class="row g-4">
+            <!-- Tarjeta verde ganadora -->
+            <div class="col-md-6">
+                <div class="ry-card ry-card-green h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="ry-badge" style="background-color: var(--cd); border: none; color: var(--gn);">Combinación recomendada</span>
+                        <div class="ry-stat-number my-3" style="font-size: 42px;">$@Model.Recomendada!.GananciaTotal.ToString("N0")</div>
+                        <p class="mb-4">
+                            Envíos <b>@Model.Recomendada.NombresCombinados</b> · @Model.Recomendada.PesoTotalKg kg · @Model.Recomendada.DesvioTotalKm km de desvío
+                        </p>
+                    </div>
+                    <div>
+                        <a class="btn btn-ry-primary" asp-action="Confirmar" asp-route-viajeId="@Model.ViajeId">Confirmar combinación</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha: Otras combinaciones -->
+            <div class="col-md-6">
+                <div class="ry-card h-100">
+                    <h4 class="fw-bold mb-3">Otras combinaciones</h4>
+
+                    @foreach (var val in Model.OtrasValidas.Take(2))
+                    {
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color: var(--ln) !important;">
+                            <b>@val.NombresCombinados</b>
+                            <span class="text-muted">@val.PesoTotalKg kg · @val.DesvioTotalKm km</span>
+                            <b>$@val.GananciaTotal.ToString("N0")</b>
+                        </div>
+                    }
+
+                    @foreach (var desc in Model.Descartadas.Take(2))
+                    {
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color: var(--ln) !important;">
+                            <b>@desc.NombresCombinados</b>
+                            <span class="text-muted">@desc.PesoTotalKg kg · @desc.DesvioTotalKm km</span>
+                            <span class="ry-badge ry-badge-danger">@desc.MotivoDescarte</span>
+                        </div>
+                    }
+
+                    <small class="text-muted d-block mt-3">En empate de ganancia gana la de menor desvío.</small>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="ry-card">
+            @if (Model.Restricciones.MaxPaquetes <= 0)
+            {
+                <p class="text-muted mb-0">Este viaje ya alcanzó su capacidad máxima de paquetes asignados.</p>
+            }
+            else
+            {
+                <p class="text-muted mb-0">No se encontraron oportunidades compatibles para este viaje.</p>
+            }
+        </div>
+    }
+}
