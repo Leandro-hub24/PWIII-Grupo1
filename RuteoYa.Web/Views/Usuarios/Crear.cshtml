@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body style="background-color: var(--bg); margin: 0; padding: 0;">
 
@@ -58,18 +59,27 @@
 
                         <div class="mb-3">
                             <label asp-for="PasswordHash" class="form-label fw-semibold small">Contraseña</label>
-                            <input asp-for="PasswordHash" class="form-control ry-input" placeholder="••••••••" />
+                            <div class="input-group">
+                                <input asp-for="PasswordHash" type="password" class="form-control ry-input border-end-0" id="passwordHashInput" placeholder="••••••••" />
+                                <button class="btn btn-outline-secondary border-start-0 bg-transparent text-secondary" type="button" onclick="togglePassword('passwordHashInput', 'iconPassword1')">
+                                    <i class="bi bi-eye" id="iconPassword1"></i>
+                                </button>
+                            </div>
                             <span asp-validation-for="PasswordHash" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-4">
                             <label asp-for="PasswordConfirmed" class="form-label fw-semibold small">Repetir contraseña</label>
-                            <input asp-for="PasswordConfirmed" class="form-control ry-input" placeholder="••••••••" />
+                            <div class="input-group">
+                                <input asp-for="PasswordConfirmed" type="password" class="form-control ry-input border-end-0" id="passwordConfirmedInput" placeholder="••••••••" />
+                                <button class="btn btn-outline-secondary border-start-0 bg-transparent text-secondary" type="button" onclick="togglePassword('passwordConfirmedInput', 'iconPassword2')">
+                                    <i class="bi bi-eye" id="iconPassword2"></i>
+                                </button>
+                            </div>
                             <span asp-validation-for="PasswordConfirmed" class="text-danger small"></span>
                         </div>
 
                         <button type="submit" class="btn btn-ry-primary w-100 py-2 mb-3">Registrarse</button>
-                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
 
                         <div class="text-center">
                             <span class="text-secondary small">¿Ya tenés una cuenta? </span>
@@ -83,4 +93,20 @@
     </div>
 
 </body>
+<script>
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    }
+</script>
 </html>
