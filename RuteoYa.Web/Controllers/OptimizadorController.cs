@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RuteoYa.Web.Models;
 using RuteoYa.Web.Services;
+using System.Security.Claims;
 
 namespace RuteoYa.Web.Controllers;
 
@@ -18,6 +19,8 @@ public class OptimizadorController : Controller
     // GET: /Optimizador o /Optimizador?viajeId=2 
     public async Task<IActionResult> Index(int? viajeId = null)
     {
+        string? nameUsuario = User.FindFirstValue(ClaimTypes.Name);
+        ViewData["nombreUsuario"] = nameUsuario ?? "Invitado";
         ViewData["ActivePage"] = "Optimizador";
         var viajesActivos = await _apiService.ObtenerViajesActivosAsync();
 

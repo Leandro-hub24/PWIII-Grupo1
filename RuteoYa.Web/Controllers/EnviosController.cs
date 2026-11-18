@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RuteoYa.Entidades.Common.Enums;
 using RuteoYa.Entidades.DTOs;
 using RuteoYa.Web.Services;
+using System.Security.Claims;
 
 namespace RuteoYa.Web.Controllers;
 
@@ -22,6 +23,8 @@ public class EnviosController : Controller
     // GET: /Envios?estado=1
     public async Task<IActionResult> Index(EstadoEnvio? estado)
     {
+        string? nameUsuario = User.FindFirstValue(ClaimTypes.Name);
+        ViewData["nombreUsuario"] = nameUsuario ?? "Invitado";
         ViewData["ActivePage"] = "Envios";
         ViewBag.EstadoActual = estado;
         var envios = await _enviosApi.GetMisEnviosAsync(estado);

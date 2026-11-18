@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RuteoYa.Entidades.Common.Enums;
 using RuteoYa.Web.Services;
+using System.Security.Claims;
 
 namespace PrototipoDeRuteaYa.Controllers
 {
@@ -18,6 +19,8 @@ namespace PrototipoDeRuteaYa.Controllers
 
         public async Task<IActionResult> Index(DateTime? desde, DateTime? hasta)
         {
+            string? nameUsuario = User.FindFirstValue(ClaimTypes.Name);
+            ViewData["nombreUsuario"] = nameUsuario ?? "Invitado";
             var transportes = await _transportesApiService
                 .GetMisTransportesAsync(EstadoEnvio.Entregado);
 

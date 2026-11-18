@@ -16,11 +16,7 @@ namespace RuteoYa.Web.Controllers
         {
             _usuariosService = usuariosService;
         }
-        // GET: Usuarios
-        public IActionResult Index()
-        {
-            return View();
-        }
+        
 
         // GET: Usuarios/Details/5
         [Authorize]
@@ -62,46 +58,5 @@ namespace RuteoYa.Web.Controllers
             }
         }
 
-        // GET: UsuariosController/Edit/5
-        public IActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: UsuariosController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsuariosController/Delete/5
-        public IActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UsuariosController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
