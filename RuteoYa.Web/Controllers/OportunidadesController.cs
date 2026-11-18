@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RuteoYa.Web.Logic;
 using RuteoYa.Web.Services;
+using System.Security.Claims;
 
 namespace RuteoYa.Web.Controllers;
 
@@ -19,6 +20,8 @@ public class OportunidadesController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(int? viajeId = null, string? orden = "ganancia")
     {
+        string? nameUsuario = User.FindFirstValue(ClaimTypes.Name);
+        ViewData["nombreUsuario"] = nameUsuario ?? "Invitado";
         ViewData["ActivePage"] = "Oportunidades";
 
         int idSeleccionado;

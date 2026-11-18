@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RuteoYa.Entidades;
+using RuteoYa.Entidades.DTOs;
 using RuteoYa.Entidades.Entities;
 using RuteoYa.Entidades.Interfaces.Services;
-using RuteoYa.Entidades.DTOs;
 using RuteoYa.Web.Models;
 using RuteoYa.Web.Services;
+using System.Security.Claims;
 
 namespace RuteoYa.Web.Controllers;
 
@@ -21,6 +22,8 @@ public class ViajesController : Controller
 
     public async Task<IActionResult> Index(string filtro = "activos")
     {
+        string? nameUsuario = User.FindFirstValue(ClaimTypes.Name);
+        ViewData["nombreUsuario"] = nameUsuario ?? "Invitado";
         ViewData["ActivePage"] = "Viajes";
         ViewBag.Filtro = filtro;
 
