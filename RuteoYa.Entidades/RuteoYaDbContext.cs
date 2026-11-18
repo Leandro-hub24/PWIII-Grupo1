@@ -15,11 +15,6 @@ public class RuteoYaDbContext : DbContext
     public RuteoYaDbContext(DbContextOptions<RuteoYaDbContext> options) : base(options)
     {
     }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(
-            @"Server=(localdb)\MSSQLLocalDB;Database=RuteoYa;Trusted_Connection=True;TrustServerCertificate=True");
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
