@@ -15,7 +15,7 @@ public static class DependencyInjection
 
         // Servicios de mapas/distancia (mock hasta integrar APIs reales)
         services.AddScoped<IGeocoderService, GeocoderService>();
-        services.AddScoped<IDistanciaService, MockDistanciaService>();
+        services.AddScoped<IDistanciaService, DistanciaService>();
 
         return services;
     }
