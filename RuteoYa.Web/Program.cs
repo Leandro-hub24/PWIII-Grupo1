@@ -14,7 +14,6 @@ builder.Services.AddDbContext<RuteoYaDbContext>(options =>
 
 // Servicios propios de Web (orquestadores, servicios HTTP que consumen API)
 var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7001";
-builder.Services.AddWebServices(apiBaseUrl);
 
 //builder.Services.AddScoped<IOportunidadesApiService, OportunidadesApiService>();
 builder.Services.AddHttpClient<IOportunidadesApiService, OportunidadesApiService>(client =>
@@ -36,6 +35,7 @@ builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITransportesApiService, TransportesApiService>();
 builder.Services.AddScoped<IEnviosApiService, EnviosApiService>();
+builder.Services.AddScoped<IViajesApiService, ViajesApiService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
