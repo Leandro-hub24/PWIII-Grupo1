@@ -54,11 +54,24 @@ public class ViajesService : IViajesService
         if (error != null)
             return ResultadoOperacion<ViajeDto>.Invalido(error);
 
-        var viaje = new Viaje { UsuarioId = usuarioId, Activo = true };
-        await CargarDatosAsync(viaje, dto);
+        try
+        {
+            var viaje = new Viaje { UsuarioId = usuarioId, Activo = true };
+            await CargarDatosAsync(viaje, dto);
 
-        await _repo.CrearAsync(viaje);
-        return ResultadoOperacion<ViajeDto>.Exito(ADto(viaje));
+            await _repo.CrearAsync(viaje);
+            return ResultadoOperacion<ViajeDto>.Exito(ADto(viaje));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return ResultadoOperacion<ViajeDto>.Invalido($"No se pudo trazar la ruta: {ex.Message}. Verificá las direcciones ingresadas.");
+        }
+
+        //var viaje = new Viaje { UsuarioId = usuarioId, Activo = true };
+        //await CargarDatosAsync(viaje, dto);
+
+        //await _repo.CrearAsync(viaje);
+        //return ResultadoOperacion<ViajeDto>.Exito(ADto(viaje));
     }
 
     public async Task<ResultadoOperacion<ViajeDto>> ActualizarViajeAsync(int usuarioId, int viajeId, CrearViajeDto dto)

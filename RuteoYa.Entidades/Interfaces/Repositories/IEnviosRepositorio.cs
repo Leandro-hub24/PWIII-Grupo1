@@ -11,4 +11,7 @@ public interface IEnviosRepositorio
     Task CrearAsync(Envio envio);
     /// <summary>Cambia el estado y agrega la fila en EnvioEstadoHistorial.</summary>
     Task CambiarEstadoAsync(Envio envio, EstadoEnvio nuevo);
+
+    /// <summary>Envíos asignados a viajes del conductor (Mis transportes).</summary>
+    Task<List<Envio>> GetTransportesDeConductorAsync(int conductorId, EstadoEnvio? estado);
 }
