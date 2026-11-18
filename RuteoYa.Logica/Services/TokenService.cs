@@ -20,12 +20,8 @@ public class TokenService
         var claims = new List<Claim>
         {
             // Claims estándar de .NET
-            new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-            new Claim(ClaimTypes.Email, usuario.Email),
-            
+            new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),          
             // Claims personalizados (Nombre y Apellido)
-            new Claim("Nombre", usuario.Nombre),
-            new Claim("Apellido", usuario.Apellido),
             new Claim("NombreCompleto", $"{usuario.Nombre} {usuario.Apellido}")
         };
 
