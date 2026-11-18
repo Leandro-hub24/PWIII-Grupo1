@@ -9,7 +9,8 @@ using RuteoYa.Web.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<RuteoYaDbContext>();
+builder.Services.AddDbContext<RuteoYaDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Servicios propios de Web (orquestadores, servicios HTTP que consumen API)
 var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7001";
