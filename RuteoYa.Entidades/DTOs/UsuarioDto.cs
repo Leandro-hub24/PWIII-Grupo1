@@ -14,6 +14,7 @@ public class UsuarioDto
     public string PasswordHash { get; set; }
     public DateTime CreadoEn { get; set; }
 
+    public UsuarioDto() { }
     public UsuarioDto(int id, string nombre, string apellido, string email, string passwordHash, DateTime creadoEn)
     {
         Id = id;
