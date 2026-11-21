@@ -6,8 +6,9 @@ namespace RuteoYa.Entidades.Interfaces.Services;
 public interface IOportunidadesService
 {
     Task<Viaje?> ObtenerViajePorIdAsync(int viajeId);
-    Task<List<Envio>> ObtenerEnviosCompatiblesAsync(int viajeId, string? orden);
+    Task<PaginadoOportunidadesDto<Envio>> ObtenerEnviosCompatiblesAsync(int viajeId, string? orden, int paguinaActual = 1, int tamanioDePaguina = 10);
     Task<Envio?> ObtenerEnvioPorIdAsync(int envioId);
     Task<DetalleOportunidadDto?> CalcularDetalleOportunidadAsync(int viajeId, int envioId);
     Task<ResultadoOperacion> AceptarOportunidadAsync(int envioId, int viajeId);
+    
 }

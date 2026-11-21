@@ -22,21 +22,24 @@ public class OportunidadesService : IOportunidadesService
         return await _oportunidadesRepositorio.GetViajePorIdAsync(viajeId);
     }
 
-    public async Task<List<Envio>> ObtenerEnviosCompatiblesAsync(int viajeId, string? orden)
+    public async Task<PaginadoOportunidadesDto<Envio>> ObtenerEnviosCompatiblesAsync(int viajeId, string? orden, int paginaActual = 1,  int tamanioDePagina = 10)
     {
-        var viaje = await _oportunidadesRepositorio.GetViajePorIdAsync(viajeId);
-        if (viaje == null) return new List<Envio>();
+        paginaActual = Math.Max(1, paginaActual);
+        tamanioDePagina = Math.Clamp(tamanioDePagina, 1, 50);
 
-        
+        var vacio = new PaginadoOportunidadesDto<Envio> { PaginaActual = paginaActual, TamanioDePagina = tamanioDePagina };
+
+        var viaje = await _oportunidadesRepositorio.GetViajePorIdAsync(viajeId);
+        if (viaje == null) return vacio;
+
         var (paquetesAsignados, pesoAsignado) = await _oportunidadesRepositorio.GetCargaAsignadaAsync(viajeId);
-        if (paquetesAsignados >= viaje.MaxPaquets) return new List<Envio>();
+        if (paquetesAsignados >= viaje.MaxPaquets) return vacio;
 
         var pesoDisponible = viaje.PesoMaxKg - pesoAsignado;
-        if (pesoDisponible <= 0) return new List<Envio>();
+        if (pesoDisponible <= 0) return vacio;
 
         var candidatos = await _oportunidadesRepositorio.GetEnviosCompatiblesAsync(pesoDisponible);
 
-        
         var rutaHabitual = await CalcularRutaHabitualAsync(viaje);
         decimal distanciaHabitual = (decimal)rutaHabitual.DistanciaKm;
 
@@ -44,25 +47,30 @@ public class OportunidadesService : IOportunidadesService
 
         foreach (var envio in candidatos)
         {
-            
             if (envio.UsuarioId == viaje.UsuarioId) continue;
 
             var (distanciaConEnvio, _) = await CalcularRutaConEnvioAsync(viaje, envio);
             decimal desvio = Math.Max(0m, distanciaConEnvio - distanciaHabitual);
 
             if (desvio <= viaje.DesvioMaxKm)
-            {
                 compatibles.Add((envio, desvio));
-            }
         }
 
-        return orden?.ToLower() switch
+        var ordenados = orden?.ToLower() switch
         {
             "desvio" => compatibles.OrderBy(x => x.Desvio).Select(x => x.Envio).ToList(),
             "compatibilidad" => compatibles
                 .OrderByDescending(x => x.Desvio > 0 ? x.Envio.Monto / x.Desvio : x.Envio.Monto)
                 .Select(x => x.Envio).ToList(),
             _ => compatibles.OrderByDescending(x => x.Envio.Monto).Select(x => x.Envio).ToList()
+        };
+
+        return new PaginadoOportunidadesDto<Envio>
+        {
+            Items = ordenados.Skip((paginaActual - 1) * tamanioDePagina).Take(tamanioDePagina).ToList(),
+            PaginaActual = paginaActual,
+            TamanioDePagina = tamanioDePagina,
+            TotalDeItems = ordenados.Count
         };
     }
 

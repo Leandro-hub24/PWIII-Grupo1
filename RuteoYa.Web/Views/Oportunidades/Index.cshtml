@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RuteoYa.Entidades.Entities.Envio>
+﻿@model RuteoYa.Entidades.DTOs.PaginadoOportunidadesDto<RuteoYa.Entidades.Entities.Envio>
 @{
     int viajeId = ViewBag.ViajeId ?? 1;
     string orden = ViewBag.OrdenActual ?? "ganancia";
@@ -26,13 +26,13 @@
 
     <!-- Tarjetas de Oportunidades -->
     <div class="row">
-        @if (!Model.Any())
+        @if (!Model.Items.Any())
         {
             <div class="alert alert-info">No se encontraron envíos compatibles para este viaje.</div>
         }
         else
         {
-            @foreach (var item in Model)
+            @foreach (var item in Model.Items)
             {
                 <div class="card mb-3 shadow-sm border-0 rounded-3">
                     <div class="card-body d-flex justify-content-between align-items-center">
@@ -57,4 +57,58 @@
             }
         }
     </div>
+    @if (Model.TotalDePaginas > 1)
+    {
+        // Ventana de números: muestra la actual y 2 hacia cada lado
+        int desde = Math.Max(1, Model.PaginaActual - 2);
+        int hasta = Math.Min(Model.TotalDePaginas, Model.PaginaActual + 2);
+
+        <nav aria-label="Paginación de oportunidades" class="mt-4">
+            <div class="d-flex justify-content-center align-items-center flex-wrap gap-2">
+
+                <a class="btn btn-outline-dark rounded-pill px-3 @(Model.PaginaActual <= 1 ? "disabled" : "")"
+                   asp-action="Index" asp-route-viajeId="@viajeId" asp-route-orden="@orden"
+                   asp-route-paginaActual="@(Model.PaginaActual - 1)">‹ Anterior</a>
+
+                @if (desde > 1)
+                {
+                    <a class="btn btn-outline-dark rounded-pill"
+                       asp-action="Index" asp-route-viajeId="@viajeId" asp-route-orden="@orden"
+                       asp-route-paginaActual="1">1</a>
+
+                    @if (desde > 2)
+                    {
+                        <span class="px-1 text-muted">…</span>
+                    }
+                }
+
+                @for (int i = desde; i <= hasta; i++)
+                {
+                    <a class="btn rounded-pill @(i == Model.PaginaActual ? "btn-dark shadow" : "btn-outline-dark")"
+                       asp-action="Index" asp-route-viajeId="@viajeId" asp-route-orden="@orden"
+                       asp-route-paginaActual="@i">@i</a>
+                }
+
+                @if (hasta < Model.TotalDePaginas)
+                {
+                    @if (hasta < Model.TotalDePaginas - 1)
+                    {
+                        <span class="px-1 text-muted">…</span>
+                    }
+
+                    <a class="btn btn-outline-dark rounded-pill"
+                       asp-action="Index" asp-route-viajeId="@viajeId" asp-route-orden="@orden"
+                       asp-route-paginaActual="@Model.TotalDePaginas">@Model.TotalDePaginas</a>
+                }
+
+                <a class="btn btn-outline-dark rounded-pill px-3 @(Model.PaginaActual >= Model.TotalDePaginas ? "disabled" : "")"
+                   asp-action="Index" asp-route-viajeId="@viajeId" asp-route-orden="@orden"
+                   asp-route-paginaActual="@(Model.PaginaActual + 1)">Siguiente ›</a>
+            </div>
+
+            <p class="text-center text-muted small mt-2 mb-0">
+                Página @Model.PaginaActual de @Model.TotalDePaginas · @Model.TotalDeItems envíos
+            </p>
+        </nav>
+    }
 </div>

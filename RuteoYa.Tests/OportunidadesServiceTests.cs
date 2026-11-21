@@ -71,7 +71,7 @@ public class OportunidadesServiceTests
 
         var resultado = await _service.ObtenerEnviosCompatiblesAsync(99, null);
 
-        Assert.Empty(resultado);
+        Assert.Empty(resultado.Items);
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class OportunidadesServiceTests
 
         var resultado = await _service.ObtenerEnviosCompatiblesAsync(1, null);
 
-        Assert.Empty(resultado);
+        Assert.Empty(resultado.Items);
     }
 
     [Fact]
@@ -103,8 +103,8 @@ public class OportunidadesServiceTests
 
         var resultado = await _service.ObtenerEnviosCompatiblesAsync(1, "desvio");
 
-        Assert.Single(resultado);
-        Assert.Equal(101, resultado[0].Id);
+        Assert.Single(resultado.Items);
+        Assert.Equal(101, resultado.Items[0].Id);
     }
 
     // ---------- CalcularDetalleOportunidadAsync ----------

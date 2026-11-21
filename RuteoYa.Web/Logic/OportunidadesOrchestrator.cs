@@ -13,9 +13,9 @@ namespace RuteoYa.Web.Logic
             _apiService = apiService;
         }
 
-        public async Task<List<Envio>> ObtenerOportunidadesAsync(int viajeId, string? orden)
+        public async Task<PaginadoOportunidadesDto<Envio>> ObtenerOportunidadesAsync(int viajeId, string? orden, int paguinaActual, int tamanioDePaguina)
         {
-            return await _apiService.ObtenerEnviosCompatiblesAsync(viajeId, orden);
+            return await _apiService.ObtenerEnviosCompatiblesAsync(viajeId, orden, paguinaActual, tamanioDePaguina);
         }
 
         public async Task<DetalleOportunidadDto?> ObtenerDetalleOportunidadAsync(int envioId, int viajeId)

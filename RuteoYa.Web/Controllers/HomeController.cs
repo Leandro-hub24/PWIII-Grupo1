@@ -57,9 +57,9 @@ namespace PrototipoDeRuteaYa.Controllers
             foreach (var viaje in viajesActivos)
             {
                 var oportunidades = await _oportunidadesOrchestrator
-                    .ObtenerOportunidadesAsync(viaje.Id, "ganancia");
+                    .ObtenerOportunidadesAsync(viaje.Id, "ganancia", 1 , 50);
 
-                foreach (var envio in oportunidades)
+                foreach (var envio in oportunidades.Items)
                 {
                     oportunidadesIds.Add(envio.Id);
                 }
