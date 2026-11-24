@@ -15,11 +15,16 @@ public class OportunidadesApiService : IOportunidadesApiService
         _logger = logger;
     }
 
-    public async Task<List<Envio>> ObtenerEnviosCompatiblesAsync(int viajeId, string? orden)
+    public async Task<PaginadoOportunidadesDto<Envio>> ObtenerEnviosCompatiblesAsync(
+    int viajeId, string? orden, int paginaActual, int tamanioDePagina)
     {
         try
         {
-            return await _httpClient.GetFromJsonAsync<List<Envio>>($"api/oportunidades/compatibles?viajeId={viajeId}&orden={orden}") ?? new();
+            var url = $"api/oportunidades/compatibles?viajeId={viajeId}" +
+                      $"&orden={Uri.EscapeDataString(orden ?? string.Empty)}" +
+                      $"&paginaActual={paginaActual}&tamanioDePagina={tamanioDePagina}";
+
+            return await _httpClient.GetFromJsonAsync<PaginadoOportunidadesDto<Envio>>(url) ?? new();
         }
         catch (Exception ex)
         {

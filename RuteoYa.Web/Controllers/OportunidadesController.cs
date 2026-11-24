@@ -11,6 +11,8 @@ public class OportunidadesController : Controller
 {
     private readonly OportunidadesOrchestrator _orchestrator;
     private readonly IViajesApiService _viajesApi;
+    private const int TamanioDePaguina = 5;
+
     public OportunidadesController(OportunidadesOrchestrator orchestrator, IViajesApiService viajesApi)
     {
         _orchestrator = orchestrator;
@@ -18,7 +20,7 @@ public class OportunidadesController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(int? viajeId = null, string? orden = "ganancia")
+    public async Task<IActionResult> Index(int? viajeId = null, string? orden = "ganancia", int paginaActual = 1)
     {
         string? nameUsuario = User.FindFirstValue(ClaimTypes.Name);
         ViewData["nombreUsuario"] = nameUsuario ?? "Invitado";
@@ -44,7 +46,7 @@ public class OportunidadesController : Controller
             idSeleccionado = misViajes.First().Id;
         }
 
-        var envios = await _orchestrator.ObtenerOportunidadesAsync(idSeleccionado, orden);
+        var envios = await _orchestrator.ObtenerOportunidadesAsync(idSeleccionado, orden, paginaActual, TamanioDePaguina);
         ViewBag.ViajeId = idSeleccionado;
         ViewBag.OrdenActual = orden;
         return View(envios);
